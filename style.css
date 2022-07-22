@@ -1,0 +1,136 @@
+body
+{
+	margin: 0;
+	text-align: center;
+	vertical-align: center;
+}
+
+.textOnLeft{
+	text-align: left;
+	margin: 2em;
+}
+
+.left{
+	float:left;
+}
+
+#container{
+	margin: 1em;
+}
+
+#mainPanel,#secondPanel,#deletePanel{
+	color: black;
+	border: 1px solid black;
+	border-radius: 1em;
+	margin: 0.5em;
+	/*margin-bottom: 1.5em;*/
+	padding: 1em;
+  	display: flex;
+  	align-items: center;
+  	flex-direction: column;
+  	width: fit-content;
+  	height: fit-content;
+}
+
+#secondPanel{
+	width: auto !important;
+	height: auto !important;
+}
+#deletePanel{
+	width: auto !important;
+	height: auto !important;
+	border-color: #FF7070 !important;/*light red*/
+	padding-top: 0.5em !important;
+	padding-bottom: 0.5em !important;
+}
+
+canvas{
+	margin: 0.5em;
+	padding: 0.5em;
+}
+
+button{
+	margin: 0.25em;
+	color: black;
+	background-color: #EEEEEE;/*light grey*/
+	border: 1px solid black;
+	border-radius: 0.25em;
+}
+
+.enabledButton:hover{
+	background-color: #212cff;/*dark blue*/
+	color: #ffffff;/*white text*/
+}
+
+.disabledButton:hover{
+	pointer-events: none !important;
+}
+
+.deleteButton{
+	background-color: #FF7070;/*light red*/
+}
+
+.deleteButton:hover{
+	background-color: #FF0000;/*red*/
+	outline: none ;
+    border:1px solid black;
+	color: #ffffff;/*white text*/
+	outline: none !important;
+	box-shadow: 0 0 1em #719ECE !important;
+}
+
+.emptyField{
+	outline: none !important;
+    border:2px solid #FF7070 !important;
+    box-shadow: 0 0 0.25em #719ECE !important;
+    border-radius: 0.25em;
+}
+
+#menu ul
+{
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+	/*background-color: #EEEEEE;/*light grey*/
+	border-left: 1px solid black;
+}
+
+#menu li
+{
+	float: left;
+	background-color: #EEEEEE;/*light grey*/
+	border-width: 1px 1px 1px 0; /* top right bottom left */
+	border-style: solid;
+	border-color: black;
+
+}
+
+#menu li a
+{
+	display: block;
+	color: black;
+	text-align: center;
+	padding-left: 1em;
+	padding-right: 1em;
+	padding-top: 1em;
+	padding-bottom: 1em;
+	text-decoration: none;/*to avoid underlined links*/
+}
+
+#menu li div
+{
+	display: inline-block;
+	text-align: center;
+	padding-left: 1em;
+	padding-right: 1em;
+	padding-top: 1em;
+	padding-bottom: 1em;
+}
+
+/* change color*/
+#menu li a:hover
+{
+	background-color: #212cff;/*dark blue*/
+	color: #ffffff;/*white text*/
+}

@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="stylesheet" href="style.css" />
+		<title>Parcourspe</title>
+		<style>
+			canvas {background:#FFFFFF}
+		</style>
+	</head>
+	<body>
+		<header>
+			<nav id="menu">
+				<ul>
+					<li style="font-weight: 1000";>
+						<div>
+							<span style="color:#212cff;/*dark blue*/";>></span><span style="color:#40F0B0;/*light blue*/";>></span><span style="color:#212cff;/*dark blue*/";>></span>
+						</div>
+					</li>
+					<li><a href="index.html">Accueil</a></li>
+					<li><div>Work in progress</div></li>
+				</ul>
+			</nav>
+		</header>
+		
+		<div id="container">
+			<div>
+				<span>prédiction : </span><span id="predictedValue">Work in progress</span>
+			</div>
+			<div style="display: flex;flex-direction: row;flex: 1 1 auto;align-content: center;justify-content: center;">
+				<div>
+					<canvas id="canvas1"></canvas>
+				</div>
+				<div style="display: flex;flex-direction: column;flex: 0 1 auto;align-self: center;">
+					<div id="mainPanel">
+						<div>
+							<span><button class="enabledButton" id="prevDate"> < </button></span>
+							<span><input id="dateSelector" type="date"></span>
+							<span><button class="enabledButton"id="nextDate"> > </button></span>
+						</div>
+						<div>
+							<button class="enabledButton" id="selectToday"> Selectionner aujourd'hui </button>
+						</div>
+						<br/>
+						<div>
+							<script type="text/javascript">
+								const electron = require('electron');
+								const ipcRenderer = electron.ipcRenderer;
+
+								function isNumber(evt) {
+								    evt = (evt) ? evt : window.event;
+								    var charCode = (evt.which) ? evt.which : evt.keyCode;
+								    if (evt.code === "Enter"){
+								    	if (document.getElementById("rank").value.length > 0){
+								    		addRankButtonClicked();
+								    	}else{
+								    		goToNextDate();
+								    	}
+								    	return false;
+								    }
+								    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+								        return false;
+								    }
+								    return true;
+								}
+
+								var addRankButtonHovered = false;
+
+								function updateAddRankButtonHover(){
+									document.getElementById("addRankButton").className = (document.getElementById("rank").value.length>0) ? "enabledButton" : "disabledButton";
+									if (addRankButtonHovered){
+										document.getElementById("rank").className = (document.getElementById("rank").value.length>0) ? "" : "emptyField";
+									}
+								}
+
+								function addRankButtonEnterHovered(){
+									addRankButtonHovered = true;
+									document.getElementById("rank").className = (document.getElementById("rank").value.length>0) ? "" : "emptyField";
+								}
+
+								function addRankButtonExitHovered(){
+									addRankButtonHovered = false;
+									document.getElementById("rank").className = "";
+								}
+
+								function addRankButtonClicked(){
+									if (points == null){
+										alert("Error : Data was not fully loaded.");
+									}else{
+										if (document.getElementById("rank").value == ""){
+											return;
+										}
+										let ndays = countDays(parseInt(dd_min),parseInt(mm_min),parseInt(dd_selected),parseInt(mm_selected));
+										let rank = parseInt(document.getElementById("rank").value);
+										
+										let i=0;
+										if (points.length>0){
+											let consistencyErrorMessage = "Opération annulée : le rang ne peut pas augmenter d'un jour à l'autre.";
+											for (i=0; i<points.length; i++){
+												if (points[i][0] > ndays){
+													if (points[i][1] > rank){
+														alert(consistencyErrorMessage);
+														return;
+													}
+													break;
+												}else if(points[i][0] == ndays){
+													if ((i+1<points.length && points[i+1][1] > rank)
+														||(i>0 && points[i-1][1] < rank)){
+														alert(consistencyErrorMessage);
+													}else{
+														points[i][1] = rank;
+														window.api.send("addRank", [ndays,rank]);
+														let today = date.toLocaleDateString('en-CA');
+														let parts = today.split('-');
+														if (parseInt(mm_selected)<parseInt(parts[1])||
+															(parseInt(mm_selected)==parseInt(parts[1])&&parseInt(dd_selected)<parseInt(parts[2]))){
+															goToNextDate();
+														}
+														updateCoeffs();
+														updateCanvas(-1,-1);
+													}
+													return;
+												}
+											}
+											if (i>0 && points[i-1][1] < rank){
+												alert(consistencyErrorMessage);
+												return;
+											}
+										}
+										points.splice(i, 0, [ndays,rank]);
+										window.api.send("addRank", [ndays,rank]);
+										let today = date.toLocaleDateString('en-CA');
+										let parts = today.split('-');
+										if (parseInt(mm_selected)<parseInt(parts[1])||
+											(parseInt(mm_selected)==parseInt(parts[1])&&parseInt(dd_selected)<parseInt(parts[2]))){
+											goToNextDate();
+										}
+										updateCoeffs();
+										updateCanvas(-1,-1);
+									}
+								}
+								
+								function deletePointButtonClicked(){
+									if (points == null){
+										alert("Error : Data was not fully loaded.");
+									}else{
+										let ndays = countDays(parseInt(dd_min),parseInt(mm_min),parseInt(dd_selected),parseInt(mm_selected));
+										for (let i=0; i<points.length; i++){
+											if (points[i][0] == ndays){
+												points.splice(i, 1);
+												document.getElementById("rank").value = "";
+												window.api.send("deletePoint", ndays);
+												updateCoeffs();
+												updateCanvas(-1,-1);
+												return;
+											}	
+										}
+									}
+								}
+							</script>
+							<span>Rang : </span>
+							<span><input style="" type="text" value="" id="rank" name="rank" onkeypress="return isNumber(event)" oninput="updateAddRankButtonHover();" maxlength="6" size="6" /></span>
+							<div>
+								<div style="width: fit-content;display: inline-block;" onmouseenter="addRankButtonEnterHovered();" onmouseleave="addRankButtonExitHovered();" >
+									<button id="addRankButton" class="disabledButton" onclick="addRankButtonClicked();"> Ajouter / Mettre à jour</button>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div id="secondPanel">
+						<div>
+							<div style="width: fit-content;display: inline-block;" >
+								<p>Work in progress</p>
+							</div>
+						</div>
+					</div>
+					<div id="deletePanel">
+						<div>
+							<div style="width: fit-content;display: inline-block;" >
+								<button id="deletePointButton" class="deleteButton" onclick="deletePointButtonClicked();"> Supprimer le point </button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+	
+		</div>
+		
+		<script type="text/javascript" src="values.js"></script>
+		<script type="text/javascript" src="modelprediction.js"></script>
+		<script type="text/javascript" src="plotgraph.js"></script>
+		<script type="text/javascript" src="pageinit.js"></script>
+
+		<footer>
+			<!-- TO COMPLETE -->
+		</footer>
+	</body>
+</html>
