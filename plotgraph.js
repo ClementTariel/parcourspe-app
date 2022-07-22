@@ -1,8 +1,6 @@
 document.onmousemove = followMouse;
 document.onclick = selectClickedDate;
 
-let date_ob = new Date();
-
 var show_date_on_the_right = true;
 var show_date_above = true;
 
@@ -337,21 +335,6 @@ function plotPoints(canvas,points){
     }
 }
 
-function resizeCanvasToDisplaySize(canvas) {
- // look up the size the canvas is being displayed
- let width = canvas.clientWidth;
- let height = canvas.clientHeight;
-
- // If it's resolution does not match change it
- if (canvas.width !== width || canvas.height !== height) {
-   canvas.width = width;
-   canvas.height = height;
-   return true;
- }
-
- return false;
-}
-
 function showDateSelected(canvas,dd,mm){
     var ctx = canvas.getContext("2d");
     let txt = dd+"/"+mm;
@@ -398,4 +381,3 @@ function showDateSelected(canvas,dd,mm){
     ctx.stroke();
     
 }
-

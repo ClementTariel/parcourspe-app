@@ -11,12 +11,38 @@ window.api.receive("sendPoints", (data) => {
 	alpha = coeffs.alpha;
 	beta = coeffs.beta;
 	unSurTau = coeffs.unSurTau;
+	if (goToToday != null){
+		goToToday();
+	}
+	if(updateCoeffs != null){
+		updateCoeffs();
+	}
 });
+
+function resizeCanvasToDisplaySize(canvas) {
+   // look up the size the canvas is being displayed
+   const width = canvas.clientWidth;
+   const height = canvas.clientHeight;
+
+   // If it's resolution does not match change it
+   if (canvas.width !== width || canvas.height !== height) {
+     canvas.width = width;
+     canvas.height = height;
+     return true;
+   }
+
+   return false;
+}
 
 
 var dateSelector = document.getElementById('dateSelector');
 var canvas = document.getElementById("canvas1");
 let ctx = canvas.getContext("2d");
+const canvas_width = "30em";
+const canvas_height = "20em";
+canvas.style.width = canvas_width;
+canvas.style.height = canvas_height;
+let already_resized = resizeCanvasToDisplaySize(canvas);
 var canvas_basic_font = "1em Arial";
 ctx.font = canvas_basic_font;
 const MWidthToPageEm = 1.2;//not too sure about that
@@ -25,9 +51,6 @@ var canvasBorderRadius = Math.round(letterSizeRef*MWidthToPageEm);
 var hiddenYOffset = 2*Math.round(letterSizeRef);
 
 const date = new Date();
-
-const canvas_width = "30em";
-const canvas_height = "20em";
 
 const mm_min = '05';
 const dd_min = '01';
@@ -89,11 +112,3 @@ const nb_days = countDays(
 	parseInt(dd_max,10),
 	parseInt(mm_max,10)
 );
-
-function updateCoeffs(){
-	let coeffs = computeCoeffs(points);
-	error = coeffs.error;
-	alpha = coeffs.alpha;
-	beta = coeffs.beta;
-	unSurTau = coeffs.unSurTau;
-}

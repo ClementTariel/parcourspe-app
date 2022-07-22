@@ -1,7 +1,3 @@
-canvas.style.width = canvas_width;
-canvas.style.height = canvas_height;
-let resized = resizeCanvasToDisplaySize(canvas);
-
 var yyyy = date.getFullYear();
 dateSelector.min = yyyy+'-'+mm_min+'-'+dd_min;
 dateSelector.max = yyyy+'-'+mm_max+'-'+dd_max;
@@ -38,8 +34,58 @@ function goToToday(){
 	updateCanvas(-1,-1);
 }
 
-goToToday();
-updateCanvas(-1,-1);
+function updatePredictedValue(){
+	if (points == null || points.length == 0 || error || alpha == null || beta == null || unSurTau == null){
+        return;
+    }
+	let t_0_min = inverse_f1(alpha,beta,unSurTau,0.5);
+	let t_0_max = inverse_f1(alpha,beta,unSurTau,-0.5);
+	let prediction_message = "";
+	let warning_message = (points == null || points.length < 6) ? " (données insuffisantes)" : ""
+	let predictedValue = document.getElementById("predictedValue");
+	if (t_0_min == null || t_0_min > countDays(parseInt(dd_min),parseInt(mm_min),6,9)){
+		prediction_message = "Non admis";
+		predictedValue.innerHTML = prediction_message + warning_message;
+		return;
+	}
+	if(t_0_max == null || t_0_max > countDays(parseInt(dd_min),parseInt(mm_min),6,9)){
+		t_0_min = Math.floor(t_0_min);
+		let day = parseInt(dd_min) + t_0_min;
+        let month = parseInt(mm_min);
+        let dpm = daysPerMonth(month);
+        while (day > dpm){
+            day -= dpm;
+            month = month%12 + 1;
+            dpm = daysPerMonth(month);
+        }
+		prediction_message = "Pas admis avant le "+day+"/"+month;
+		predictedValue.innerHTML = prediction_message + warning_message;
+		return;
+	}
+	t_0_min = Math.floor(t_0_min);
+	t_0_max = Math.floor(t_0_max);
+	let day = parseInt(dd_min) + t_0_min;
+    let month = parseInt(mm_min);
+    let dpm = daysPerMonth(month);
+    while (day > dpm){
+        day -= dpm;
+        month = month%12 + 1;
+        dpm = daysPerMonth(month);
+    }
+	prediction_message = "Admis entre le "+day+"/"+month;
+
+	day = parseInt(dd_min) + t_0_max;
+    month = parseInt(mm_min);
+    dpm = daysPerMonth(month);
+    while (day > dpm){
+        day -= dpm;
+        month = month%12 + 1;
+        dpm = daysPerMonth(month);
+    }
+	prediction_message = prediction_message+" et le "+day+"/"+month;
+	predictedValue.innerHTML = prediction_message + warning_message;
+	return;
+}
 
 function goToPrevDate(){
 	let new_day = parseInt(dd_selected,10);
@@ -127,3 +173,17 @@ let nextDate = document.getElementById('nextDate');
 nextDate.onclick = goToNextDate;
 
 dateSelector.onchange = checkChange;
+
+function updateCoeffs(){
+	if (points == null || points.length==0){
+		return;
+	}
+	let coeffs = computeCoeffs(points);
+	error = coeffs.error;
+	alpha = coeffs.alpha;
+	beta = coeffs.beta;
+	unSurTau = coeffs.unSurTau;
+	updatePredictedValue();
+}
+
+updateCoeffs();

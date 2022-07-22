@@ -172,3 +172,14 @@ function computeCoeffs(Input){
 function f1(alpha,beta,unSurTau,t){
     return alpha*Math.exp(t*unSurTau)+beta;
 }
+
+function inverse_f1(alpha,beta,unSurTau,y){
+	if (alpha != 0 && unSurTau != 0){
+		y = (y-beta)/alpha;
+		y = y;
+		if (y>0){
+			return Math.log(y)/unSurTau;
+		}	
+	}
+	return null;
+}
