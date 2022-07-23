@@ -267,7 +267,7 @@ function plotPrediction(canvas,alpha,beta,unSurTau,error){
     ctx.stroke();
     ctx.beginPath();
     ctx.strokeStyle = functionColor;
-    let rank_i = rankToY(canvas,f1(alpha,beta,unSurTau,0));
+    let rank_i = f1(alpha,beta,unSurTau,0);
     let next_rank = rank_i;
     let x_i = 0;
     let next_x = x_i;
