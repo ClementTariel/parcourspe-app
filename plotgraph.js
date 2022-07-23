@@ -296,6 +296,7 @@ function plotPrediction(canvas,alpha,beta,unSurTau,error){
                 let t = (y_to-max_y)/(y_to-y_from);
                 next_x = x_i*t + next_x*(1-t);
                 y_to = max_y;
+                continue;
             }else if (y_from <= min_y && y_to > min_y){
                 let t = (min_y-y_from)/(y_to-y_from);
                 x_i = x_i*(1-t) + next_x*t;

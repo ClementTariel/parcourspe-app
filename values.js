@@ -1,9 +1,10 @@
+var etab_id = 0;//temporary
 var points = null;
 var alpha = null;
 var beta = null;
 var unSurTau = null;
 var error = null;
-window.api.send("requestPoints", "some data");
+window.api.send("requestPoints", etab_id);
 window.api.receive("sendPoints", (data) => {
 	points = data;
 	let coeffs = computeCoeffs(points);

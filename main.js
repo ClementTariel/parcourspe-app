@@ -52,21 +52,34 @@ app.on('window-all-closed', () => {
 });
 
 
-ipcMain.on("requestPoints", (event, args) => {
-  let points = store.get('points');
-  if (points == null){
-    points = [];
-    store.set('points',points);
+ipcMain.on("requestPoints", (event, etab_id) => {
+  let data = store.get('data');
+  if (data == null){
+    data = {};
+    store.set('data',data);
   }
-  mainWindow.webContents.send("sendPoints", points);
+  if (!(etab_id in data)){
+    data[etab_id.toString()] = {};
+    data[etab_id.toString()]["points"]=[];
+    store.set('data',data);
+  }
+  mainWindow.webContents.send("sendPoints", data[etab_id.toString()]["points"]);
 });
 
-ipcMain.on("addRank", (event, point) => {
-  let points = store.get('points');
-  if (points == null){
-    points = [];
-    store.set('points',points);
+ipcMain.on("addRank", (event, args) => {
+  let etab_id = args["etab_id"];
+  let point = args["point"];
+  let data = store.get('data');
+  if (data == null){
+    data = {};
+    store.set('data',data);
   }
+  if (!(etab_id in data)){
+    data[etab_id.toString()] = {};
+    data[etab_id.toString()]["points"]=[];
+    store.set('data',data);
+  }
+  let points = store.get("data."+etab_id+".points");
   let ndays = point[0];
   let rank = point[1];
   let i=0;
@@ -81,7 +94,7 @@ ipcMain.on("addRank", (event, point) => {
         if (!((i+1<points.length && points[i+1][1] > rank)
           ||(i>0 && points[i-1][1] < rank))){
           points[i][1] = rank;
-          store.set('points',points);
+          store.set("data."+etab_id+".points",points);
         }
         return;
       }
@@ -91,19 +104,27 @@ ipcMain.on("addRank", (event, point) => {
     }
   }
   points.splice(i, 0, [ndays,rank]);
-  store.set('points',points);
+  store.set("data."+etab_id+".points",points);
 });
 
-ipcMain.on("deletePoint", (event, ndays) => {
-  let points = store.get('points');
-  if (points == null){
-    points = [];
-    store.set('points',points);
+ipcMain.on("deletePoint", (event, args) => {
+  let etab_id = args["etab_id"];
+  let ndays = args["ndays"];
+  let data = store.get('data');
+  if (data == null){
+    data = {};
+    store.set('data',data);
   }
+  if (!(etab_id in data)){
+    data[etab_id.toString()] = {};
+    data[etab_id.toString()]["points"]=[];
+    store.set('data',data);
+  }
+  let points = store.get("data."+etab_id+".points");
   for (let i=0; i<points.length; i++){
     if (points[i][0] == ndays){
       points.splice(i, 1);
-      store.set('points',points);
+      store.set("data."+etab_id+".points",points);
       return;
     } 
   }
