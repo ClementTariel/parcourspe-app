@@ -33,13 +33,19 @@ function resizeCanvasToDisplaySize(canvas) {
 
    return false;
 }
-
+let canvas_height_in_em = 20;
+let blank_space_in_em = 2;
+let visible_height_in_em = canvas_height_in_em-blank_space_in_em;
 
 var dateSelector = document.getElementById('dateSelector');
+
+var twoMainPanels = document.getElementById('twoMainPanels');
+twoMainPanels.style.height = visible_height_in_em+"em";
+
 var canvas = document.getElementById("canvas1");
 let ctx = canvas.getContext("2d");
 const canvas_width = "30em";
-const canvas_height = "20em";
+const canvas_height = canvas_height_in_em+"em";
 canvas.style.width = canvas_width;
 canvas.style.height = canvas_height;
 let already_resized = resizeCanvasToDisplaySize(canvas);
@@ -47,8 +53,15 @@ var canvas_basic_font = "1em Arial";
 ctx.font = canvas_basic_font;
 const MWidthToPageEm = 1.2;//not too sure about that
 var letterSizeRef = ctx.measureText('M').width;
-var canvasBorderRadius = Math.round(letterSizeRef*MWidthToPageEm);
-var hiddenYOffset = 2*Math.round(letterSizeRef);
+var canvasBorderRadius = Math.ceil(letterSizeRef*MWidthToPageEm);
+var hiddenYOffset = Math.round(blank_space_in_em*letterSizeRef*MWidthToPageEm);
+
+var deletePanel = document.getElementById('deletePanel');
+var mainPanel = document.getElementById('mainPanel');
+var secondPanel = document.getElementById('secondPanel');
+deletePanel.style.marginTop = parseInt(canvas.clientHeight*(visible_height_in_em-0.25/*margin*/)/canvas_height_in_em
+	- mainPanel.clientHeight - secondPanel.clientHeight)
+	+ "px";
 
 const date = new Date();
 

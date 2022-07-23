@@ -51,13 +51,13 @@ function updateCanvas(x,y){
         let radius = canvasBorderRadius;
         if (x < offsetX + radius){
             smoothYOffset += Math.ceil(radius - Math.sqrt(radius**2 - (radius - roundx)**2));
-            if (x< offsetX + ctx.lineWidth){
+            if (x <= offsetX + Math.ceil(ctx.lineWidth/2)){
                 ctx.lineWidth = Math.ceil(x-offsetX);
                 roundx+=ctx.lineWidth;
             }
         }else if(x > offsetX + canvas.width - radius){
             smoothYOffset += Math.ceil(radius - Math.sqrt(radius**2 - (roundx- canvas.width + radius)**2));
-            if (x >  offsetX + canvas.width - ctx.lineWidth){
+            if (x >=  offsetX + canvas.width - Math.ceil(ctx.lineWidth/2)){
                 ctx.lineWidth = Math.ceil(offsetX + canvas.width - x);
                 roundx-=ctx.lineWidth;
             }
@@ -280,8 +280,8 @@ function plotPrediction(canvas,alpha,beta,unSurTau,error){
         next_rank = f1(alpha,beta,unSurTau,i+1);
         next_x = Math.round(canvas.width*(i+1)/n);
 
-        max_y = canvas.height - hiddenYOffset;
-        min_y = 0;
+        max_y = canvas.height - hiddenYOffset - 1;
+        min_y = 1;
         if (x_i < radius){
             min_y = Math.ceil(radius - Math.sqrt(radius**2 - (radius - x_i)**2));
             max_y = canvas.height - hiddenYOffset - min_y;
@@ -355,7 +355,7 @@ function showDateSelected(canvas,dd,mm){
     }else{
         txt_x = Math.round(xpos - ctx.measureText(txt).width/2);
     }
-    ctx.fillText(txt,txt_x,  canvas.height - Math.round(Math.round(ctx.measureText('M').width)/2));
+    ctx.fillText(txt,txt_x,  canvas.height - hiddenYOffset + 3*Math.round(Math.round(ctx.measureText('M').width)/2));
 
     ctx.beginPath();
     ctx.lineWidth = 2;

@@ -8,7 +8,7 @@ const Store = require('electron-store');
 
 const store = new Store();
 
-const ratio_screen = 1.5;
+const ratio_screen = 1.7;
 const scale_screen = 0.7;
 
 let mainWindow;

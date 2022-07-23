@@ -58,7 +58,7 @@ function updatePredictedValue(){
             month = month%12 + 1;
             dpm = daysPerMonth(month);
         }
-		prediction_message = "Pas admis avant le "+day+"/"+month;
+		prediction_message = "Pas admis avant le "+((day<10)?"0":"")+day+"/"+((month<10)?"0":"")+month;
 		predictedValue.innerHTML = prediction_message + warning_message;
 		return;
 	}
@@ -72,7 +72,7 @@ function updatePredictedValue(){
         month = month%12 + 1;
         dpm = daysPerMonth(month);
     }
-	prediction_message = "Admis entre le "+day+"/"+month;
+	prediction_message = "Admis entre le "+((day<10)?"0":"")+day+"/"+((month<10)?"0":"")+month;
 
 	day = parseInt(dd_min) + t_0_max;
     month = parseInt(mm_min);
@@ -82,7 +82,7 @@ function updatePredictedValue(){
         month = month%12 + 1;
         dpm = daysPerMonth(month);
     }
-	prediction_message = prediction_message+" et le "+day+"/"+month;
+	prediction_message = prediction_message+" et le "+((day<10)?"0":"")+day+"/"+((month<10)?"0":"")+month;
 	predictedValue.innerHTML = prediction_message + warning_message;
 	return;
 }

@@ -4,9 +4,6 @@
 		<meta charset="utf-8" />
 		<link rel="stylesheet" href="style.css" />
 		<title>Parcourspe</title>
-		<style>
-			canvas {background:#FFFFFF}
-		</style>
 	</head>
 	<body>
 		<header>
@@ -24,163 +21,179 @@
 		</header>
 		
 		<div id="container">
-			<div>
-				<span>prédiction : </span><span id="predictedValue">Work in progress</span>
+			<div id="predictionPanel" class="panel">
+				<div >
+					<span>prédiction : </span><span id="predictedValue">Work in progress</span>
+				</div>
 			</div>
-			<div style="display: flex;flex-direction: row;flex: 1 1 auto;align-content: center;justify-content: center;">
+			<div id="subBlock1">
 				<div>
 					<canvas id="canvas1"></canvas>
 				</div>
-				<div style="display: flex;flex-direction: column;flex: 0 1 auto;align-self: center;">
-					<div id="mainPanel">
-						<div>
-							<span><button class="enabledButton" id="prevDate"> < </button></span>
-							<span><input id="dateSelector" type="date"></span>
-							<span><button class="enabledButton"id="nextDate"> > </button></span>
-						</div>
-						<div>
-							<button class="enabledButton" id="selectToday"> Selectionner aujourd'hui </button>
-						</div>
-						<br/>
-						<div>
-							<script type="text/javascript">
-								const electron = require('electron');
-								const ipcRenderer = electron.ipcRenderer;
+				<div id="subBlock2">
+					<div id="twoMainPanels">
+						<div id="mainPanel" class="panel">
+							<div>
+								<span><button class="enabledButton" id="prevDate"> < </button></span>
+								<span><input id="dateSelector" type="date"></span>
+								<span><button class="enabledButton"id="nextDate"> > </button></span>
+							</div>
+							<div>
+								<button class="enabledButton" id="selectToday"> Selectionner aujourd'hui </button>
+							</div>
+							<br/>
+							<div>
+								<script type="text/javascript">
+									const electron = require('electron');
+									const ipcRenderer = electron.ipcRenderer;
+									
+									function isNumber(evt) {
+									    evt = (evt) ? evt : window.event;
+									    var charCode = (evt.which) ? evt.which : evt.keyCode;
+									    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+									        return false;
+									    }
+									    return true;
+									}
 
-								function isNumber(evt) {
-								    evt = (evt) ? evt : window.event;
-								    var charCode = (evt.which) ? evt.which : evt.keyCode;
-								    if (evt.code === "Enter"){
-								    	if (document.getElementById("rank").value.length > 0){
-								    		addRankButtonClicked();
-								    	}else{
-								    		goToNextDate();
-								    	}
-								    	return false;
-								    }
-								    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
-								        return false;
-								    }
-								    return true;
-								}
+									function checkRankValidity(evt){
+										evt = (evt) ? evt : window.event;
+									    var charCode = (evt.which) ? evt.which : evt.keyCode;
+									    if (evt.code === "Enter"){
+									    	if (document.getElementById("rank").value.length > 0){
+									    		addRankButtonClicked();
+									    	}else{
+									    		goToNextDate();
+									    	}
+									    	return false;
+									    }
+									    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+									        return false;
+									    }
+									    return true;
+									}
 
-								var addRankButtonHovered = false;
+									var addRankButtonHovered = false;
 
-								function updateAddRankButtonHover(){
-									document.getElementById("addRankButton").className = (document.getElementById("rank").value.length>0) ? "enabledButton" : "disabledButton";
-									if (addRankButtonHovered){
+									function updateAddRankButtonHover(){
+										document.getElementById("addRankButton").className = (document.getElementById("rank").value.length>0) ? "enabledButton" : "disabledButton";
+										if (addRankButtonHovered){
+											document.getElementById("rank").className = (document.getElementById("rank").value.length>0) ? "" : "emptyField";
+										}
+									}
+
+									function addRankButtonEnterHovered(){
+										addRankButtonHovered = true;
 										document.getElementById("rank").className = (document.getElementById("rank").value.length>0) ? "" : "emptyField";
 									}
-								}
 
-								function addRankButtonEnterHovered(){
-									addRankButtonHovered = true;
-									document.getElementById("rank").className = (document.getElementById("rank").value.length>0) ? "" : "emptyField";
-								}
+									function addRankButtonExitHovered(){
+										addRankButtonHovered = false;
+										document.getElementById("rank").className = "";
+									}
 
-								function addRankButtonExitHovered(){
-									addRankButtonHovered = false;
-									document.getElementById("rank").className = "";
-								}
-
-								function addRankButtonClicked(){
-									if (points == null){
-										alert("Error : Data was not fully loaded.");
-									}else{
-										if (document.getElementById("rank").value == ""){
-											return;
-										}
-										let ndays = countDays(parseInt(dd_min),parseInt(mm_min),parseInt(dd_selected),parseInt(mm_selected));
-										let rank = parseInt(document.getElementById("rank").value);
-										
-										let i=0;
-										if (points.length>0){
-											let consistencyErrorMessage = "Opération annulée : le rang ne peut pas augmenter d'un jour à l'autre.";
-											for (i=0; i<points.length; i++){
-												if (points[i][0] > ndays){
-													if (points[i][1] > rank){
-														alert(consistencyErrorMessage);
+									function addRankButtonClicked(){
+										if (points == null){
+											alert("Error : Data was not fully loaded.");
+										}else{
+											if (document.getElementById("rank").value == ""){
+												return;
+											}
+											let ndays = countDays(parseInt(dd_min),parseInt(mm_min),parseInt(dd_selected),parseInt(mm_selected));
+											let rank = parseInt(document.getElementById("rank").value);
+											
+											let i=0;
+											if (points.length>0){
+												let consistencyErrorMessage = "Opération annulée : le rang ne peut pas augmenter d'un jour à l'autre.";
+												for (i=0; i<points.length; i++){
+													if (points[i][0] > ndays){
+														if (points[i][1] > rank){
+															alert(consistencyErrorMessage);
+															return;
+														}
+														break;
+													}else if(points[i][0] == ndays){
+														if ((i+1<points.length && points[i+1][1] > rank)
+															||(i>0 && points[i-1][1] < rank)){
+															alert(consistencyErrorMessage);
+														}else{
+															points[i][1] = rank;
+															window.api.send("addRank", [ndays,rank]);
+															let today = date.toLocaleDateString('en-CA');
+															let parts = today.split('-');
+															if (parseInt(mm_selected)<parseInt(parts[1])||
+																(parseInt(mm_selected)==parseInt(parts[1])&&parseInt(dd_selected)<parseInt(parts[2]))){
+																goToNextDate();
+															}
+															updateCoeffs();
+															updateCanvas(-1,-1);
+														}
 														return;
 													}
-													break;
-												}else if(points[i][0] == ndays){
-													if ((i+1<points.length && points[i+1][1] > rank)
-														||(i>0 && points[i-1][1] < rank)){
-														alert(consistencyErrorMessage);
-													}else{
-														points[i][1] = rank;
-														window.api.send("addRank", [ndays,rank]);
-														let today = date.toLocaleDateString('en-CA');
-														let parts = today.split('-');
-														if (parseInt(mm_selected)<parseInt(parts[1])||
-															(parseInt(mm_selected)==parseInt(parts[1])&&parseInt(dd_selected)<parseInt(parts[2]))){
-															goToNextDate();
-														}
-														updateCoeffs();
-														updateCanvas(-1,-1);
-													}
+												}
+												if (i>0 && points[i-1][1] < rank){
+													alert(consistencyErrorMessage);
 													return;
 												}
 											}
-											if (i>0 && points[i-1][1] < rank){
-												alert(consistencyErrorMessage);
-												return;
+											points.splice(i, 0, [ndays,rank]);
+											window.api.send("addRank", [ndays,rank]);
+											let today = date.toLocaleDateString('en-CA');
+											let parts = today.split('-');
+											if (parseInt(mm_selected)<parseInt(parts[1])||
+												(parseInt(mm_selected)==parseInt(parts[1])&&parseInt(dd_selected)<parseInt(parts[2]))){
+												goToNextDate();
+											}
+											updateCoeffs();
+											updateCanvas(-1,-1);
+										}
+									}
+									
+									function deletePointButtonClicked(){
+										if (points == null){
+											alert("Error : Data was not fully loaded.");
+										}else{
+											let ndays = countDays(parseInt(dd_min),parseInt(mm_min),parseInt(dd_selected),parseInt(mm_selected));
+											for (let i=0; i<points.length; i++){
+												if (points[i][0] == ndays){
+													points.splice(i, 1);
+													document.getElementById("rank").value = "";
+													window.api.send("deletePoint", ndays);
+													updateCoeffs();
+													updateCanvas(-1,-1);
+													return;
+												}	
 											}
 										}
-										points.splice(i, 0, [ndays,rank]);
-										window.api.send("addRank", [ndays,rank]);
-										let today = date.toLocaleDateString('en-CA');
-										let parts = today.split('-');
-										if (parseInt(mm_selected)<parseInt(parts[1])||
-											(parseInt(mm_selected)==parseInt(parts[1])&&parseInt(dd_selected)<parseInt(parts[2]))){
-											goToNextDate();
-										}
-										updateCoeffs();
-										updateCanvas(-1,-1);
 									}
-								}
-								
-								function deletePointButtonClicked(){
-									if (points == null){
-										alert("Error : Data was not fully loaded.");
-									}else{
-										let ndays = countDays(parseInt(dd_min),parseInt(mm_min),parseInt(dd_selected),parseInt(mm_selected));
-										for (let i=0; i<points.length; i++){
-											if (points[i][0] == ndays){
-												points.splice(i, 1);
-												document.getElementById("rank").value = "";
-												window.api.send("deletePoint", ndays);
-												updateCoeffs();
-												updateCanvas(-1,-1);
-												return;
-											}	
-										}
-									}
-								}
-							</script>
-							<span>Rang : </span>
-							<span><input style="" type="text" value="" id="rank" name="rank" onkeypress="return isNumber(event)" oninput="updateAddRankButtonHover();" maxlength="6" size="6" /></span>
+								</script>
+								<span>Rang : </span>
+								<span><input type="text" value="" id="rank" name="rank" onkeypress="return checkRankValidity(event)" oninput="updateAddRankButtonHover();" maxlength="6" size="6" /></span>
+								<div>
+									<div class="inlineBlockWrapper" onmouseenter="addRankButtonEnterHovered();" onmouseleave="addRankButtonExitHovered();" >
+										<button id="addRankButton" class="disabledButton" onclick="addRankButtonClicked();"> Ajouter / Mettre à jour</button>
+									</div>
+								</div>
+							</div>
+							<div id="deletePanel" class="panel">
+								<div>
+									<div class="inlineBlockWrapper" >
+										<button id="deletePointButton" class="deleteButton" onclick="deletePointButtonClicked();"> Supprimer le point </button>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div id="secondPanel" class="panel">
 							<div>
-								<div style="width: fit-content;display: inline-block;" onmouseenter="addRankButtonEnterHovered();" onmouseleave="addRankButtonExitHovered();" >
-									<button id="addRankButton" class="disabledButton" onclick="addRankButtonClicked();"> Ajouter / Mettre à jour</button>
+								<div class="inlineBlockWrapper" >
+									<div><span>Rang du dernier admis : </span><span><input type="text" name="lastAdmitted" onkeypress="return isNumber(event)" maxlength="6" size="6"/></span></div>
+									<br/>
+									<div><span>Capacité d'accueil : </span><span><input type="text" name="capacity"onkeypress="return isNumber(event)" maxlength="4" size="4"/></span></div>
 								</div>
 							</div>
 						</div>
 					</div>
-					<div id="secondPanel">
-						<div>
-							<div style="width: fit-content;display: inline-block;" >
-								<p>Work in progress</p>
-							</div>
-						</div>
-					</div>
-					<div id="deletePanel">
-						<div>
-							<div style="width: fit-content;display: inline-block;" >
-								<button id="deletePointButton" class="deleteButton" onclick="deletePointButtonClicked();"> Supprimer le point </button>
-							</div>
-						</div>
-					</div>
+					
 				</div>
 			</div>
 	
