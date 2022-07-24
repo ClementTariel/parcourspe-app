@@ -123,11 +123,15 @@ button{
 	pointer-events: none !important;
 }
 
-.deleteButton{
+.enabledDeleteButton, .disabledDeleteButton{
 	background-color: #FF7070;/*light red*/
 }
 
-.deleteButton:hover{
+.disabledDeleteButton:hover{
+	pointer-events: none !important;
+}
+
+.enabledDeleteButton:hover{
 	background-color: #FF0000;/*red*/
 	outline: none ;
     border:1px solid black;
