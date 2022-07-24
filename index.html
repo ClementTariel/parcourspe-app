@@ -65,6 +65,7 @@
 									    	}else{
 									    		goToNextDate();
 									    	}
+									    	updateButtonsHover();
 									    	return false;
 									    }
 									    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
@@ -74,6 +75,7 @@
 									}
 
 									var addRankButtonHovered = false;
+									var deletePointButtonHovered = false;
 
 									function updateAddRankButtonHover(){
 										document.getElementById("addRankButton").className = (document.getElementById("rank").value.length>0) ? "enabledButton" : "disabledButton";
@@ -82,13 +84,35 @@
 										}
 									}
 
+									function updateDeletePointButtonHover(){
+										document.getElementById("deletePointButton").className = (document.getElementById("rank").value.length>0) ? "enabledDeleteButton" : "disabledDeleteButton";
+										if (deletePointButtonHovered){
+											document.getElementById("rank").className = (document.getElementById("rank").value.length>0) ? "" : "emptyField";
+										}
+									}
+
+									function updateButtonsHover(){
+										updateAddRankButtonHover();
+										updateDeletePointButtonHover()
+									}
+
 									function addRankButtonEnterHovered(){
 										addRankButtonHovered = true;
 										document.getElementById("rank").className = (document.getElementById("rank").value.length>0) ? "" : "emptyField";
 									}
 
+									function deletePointButtonEnterHovered(){
+										deletePointButtonHovered = true;
+										document.getElementById("rank").className = (document.getElementById("rank").value.length>0) ? "" : "emptyField";
+									}
+
 									function addRankButtonExitHovered(){
 										addRankButtonHovered = false;
+										document.getElementById("rank").className = "";
+									}
+
+									function deletePointButtonExitHovered(){
+										deletePointButtonHovered = false;
 										document.getElementById("rank").className = "";
 									}
 
@@ -158,6 +182,7 @@
 												if (points[i][0] == ndays){
 													points.splice(i, 1);
 													document.getElementById("rank").value = "";
+													updateButtonsHover()
 													window.api.send("deletePoint", {"etab_id":etab_id,"ndays":ndays});
 													updateCoeffs();
 													updateCanvas(-1,-1);
@@ -168,7 +193,7 @@
 									}
 								</script>
 								<span>Rang : </span>
-								<span><input type="text" value="" id="rank" name="rank" onkeypress="return checkRankValidity(event)" oninput="updateAddRankButtonHover();" maxlength="6" size="6" /></span>
+								<span><input type="text" value="" id="rank" name="rank" onkeypress="return checkRankValidity(event)" oninput="updateButtonsHover();" maxlength="6" size="6" /></span>
 								<div>
 									<div class="inlineBlockWrapper" onmouseenter="addRankButtonEnterHovered();" onmouseleave="addRankButtonExitHovered();" >
 										<button id="addRankButton" class="disabledButton" onclick="addRankButtonClicked();"> Ajouter / Mettre à jour</button>
@@ -177,8 +202,8 @@
 							</div>
 							<div id="deletePanel" class="panel">
 								<div>
-									<div class="inlineBlockWrapper" >
-										<button id="deletePointButton" class="enabledDeleteButton" onclick="deletePointButtonClicked();"> Supprimer le point </button>
+									<div class="inlineBlockWrapper" onmouseenter="deletePointButtonEnterHovered();" onmouseleave="deletePointButtonExitHovered();">
+										<button id="deletePointButton" class="disabledDeleteButton" onclick="deletePointButtonClicked();"> Supprimer le point </button>
 									</div>
 								</div>
 							</div>

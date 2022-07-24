@@ -34,9 +34,10 @@ function resizeCanvasToDisplaySize(canvas) {
 
    return false;
 }
-let canvas_height_in_em = 20;
-let blank_space_in_em = 2;
-let visible_height_in_em = canvas_height_in_em-blank_space_in_em;
+var canvas_height_in_em = 20;
+var canvas_width_in_em = 30;
+var blank_space_in_em = 2;
+var visible_height_in_em = canvas_height_in_em-blank_space_in_em;
 
 var dateSelector = document.getElementById('dateSelector');
 
@@ -45,7 +46,7 @@ twoMainPanels.style.height = visible_height_in_em+"em";
 
 var canvas = document.getElementById("canvas1");
 let ctx = canvas.getContext("2d");
-const canvas_width = "30em";
+const canvas_width = canvas_width_in_em+"em";
 const canvas_height = canvas_height_in_em+"em";
 canvas.style.width = canvas_width;
 canvas.style.height = canvas_height;
@@ -53,11 +54,9 @@ let already_resized = resizeCanvasToDisplaySize(canvas);
 var canvas_basic_font = "1em Arial";
 ctx.font = canvas_basic_font;
 
-//const MWidthToPageEm = 1.2;//not too sure about that
-var letterSizeRef = ctx.measureText('M').width;
-const MWidthToPageEm = (canvas.clientWidth / canvas_width)*letterSizeRef;
-var canvasBorderRadius = Math.ceil(letterSizeRef*MWidthToPageEm);
-var hiddenYOffset = Math.round(blank_space_in_em*letterSizeRef*MWidthToPageEm);
+const pageEmToPixels = canvas.clientWidth/canvas_width_in_em;
+var canvasBorderRadius = Math.ceil(1*pageEmToPixels);
+var hiddenYOffset = Math.round(blank_space_in_em*pageEmToPixels);
 
 var deletePanel = document.getElementById('deletePanel');
 var mainPanel = document.getElementById('mainPanel');

@@ -70,11 +70,6 @@ body
 	border-radius: 0.5em !important;
 }
 
-#deletePointButton{
-	margin-right: auto;
-	margin-left: auto;
-}
-
 #twoMainPanels{
 	padding-top: 0.5em;
 	padding-bottom: 0;
@@ -123,7 +118,9 @@ button{
 	pointer-events: none !important;
 }
 
-.enabledDeleteButton, .disabledDeleteButton{
+#deletePointButton{
+	margin-right: auto;
+	margin-left: auto;
 	background-color: #FF7070;/*light red*/
 }
 
@@ -132,7 +129,7 @@ button{
 }
 
 .enabledDeleteButton:hover{
-	background-color: #FF0000;/*red*/
+	background-color: #FF0000 !important;/*red*/
 	outline: none ;
     border:1px solid black;
 	color: #ffffff;/*white text*/

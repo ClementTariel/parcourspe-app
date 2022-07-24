@@ -14,6 +14,7 @@ function displayRank(d,m){
 		}
 	}
 	document.getElementById("rank").value = rank;
+	updateButtonsHover();
 }
 
 function goToToday(){
