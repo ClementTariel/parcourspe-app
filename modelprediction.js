@@ -111,9 +111,13 @@ function computeCoeffs(Input){
 
 	// y(t) = alpha*exp(t*unSurTau)+beta
 	var unSurTau = A;
+	let threshold = 1/10**9;
+	if (unSurTau**2<threshold**2){
+		unSurTau = threshold;
+	}
 	var alpha = 0;
 	if(X.length>0){
-		alpha = -Math.exp(B)/A;
+		alpha = -Math.exp(B)/unSurTau;
 	}
 	var beta = 0;
 	var ySum = 0;

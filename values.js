@@ -3,6 +3,7 @@ if (etab_id == null || parseInt(etab_id)<0){
 	window.location.replace("index.html");
 }
 etab_id = parseInt(etab_id);
+var etab_name = null;
 var points = null;
 var alpha = null;
 var beta = null;
@@ -13,7 +14,9 @@ window.api.receive("sendPoints", (data) => {
 	if (data == null){
 		window.location.replace("index.html");
 	}else{
-		points = data;
+		points = data["points"];
+		etab_name = data["name"];
+		document.getElementById("etabName").innerHTML = '"'+sanitize(etab_name)+'" : ';
 		let coeffs = computeCoeffs(points);
 		error = coeffs.error;
 		alpha = coeffs.alpha;

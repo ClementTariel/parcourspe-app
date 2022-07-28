@@ -14,6 +14,7 @@ function displayRank(d,m){
 		}
 	}
 	document.getElementById("rank").value = rank;
+	document.getElementById("rank").focus();
 	updateButtonsHover();
 }
 

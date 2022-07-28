@@ -64,7 +64,7 @@ ipcMain.on("requestPoints", (event, etab_id) => {
   if (etab_id=="NaN" || !data.hasOwnProperty(etab_id.toString())){
     mainWindow.webContents.send("sendPoints", null);
   }
-  mainWindow.webContents.send("sendPoints", data[etab_id.toString()]["points"]);
+  mainWindow.webContents.send("sendPoints",{"name":data[etab_id.toString()]["name"],"points": data[etab_id.toString()]["points"]});
 });
 
 ipcMain.on("addRank", (event, args) => {
