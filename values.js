@@ -1,4 +1,8 @@
-var etab_id = 0;//temporary
+var etab_id = window.location.search.substring(1).slice(2);
+if (etab_id == null || parseInt(etab_id)<0){
+	window.location.replace("index.html");
+}
+etab_id = parseInt(etab_id);
 var points = null;
 var alpha = null;
 var beta = null;
@@ -6,17 +10,21 @@ var unSurTau = null;
 var error = null;
 window.api.send("requestPoints", etab_id);
 window.api.receive("sendPoints", (data) => {
-	points = data;
-	let coeffs = computeCoeffs(points);
-	error = coeffs.error;
-	alpha = coeffs.alpha;
-	beta = coeffs.beta;
-	unSurTau = coeffs.unSurTau;
-	if (goToToday != null){
-		goToToday();
-	}
-	if(updateCoeffs != null){
-		updateCoeffs();
+	if (data == null){
+		window.location.replace("index.html");
+	}else{
+		points = data;
+		let coeffs = computeCoeffs(points);
+		error = coeffs.error;
+		alpha = coeffs.alpha;
+		beta = coeffs.beta;
+		unSurTau = coeffs.unSurTau;
+		if (typeof goToToday === "function"){
+			goToToday();
+		}
+		if(typeof updateCoeffs === "function"){
+			updateCoeffs();
+		}
 	}
 });
 
@@ -34,7 +42,7 @@ function resizeCanvasToDisplaySize(canvas) {
 
    return false;
 }
-var canvas_height_in_em = 20;
+var canvas_height_in_em = 21;
 var canvas_width_in_em = 30;
 var blank_space_in_em = 2;
 var visible_height_in_em = canvas_height_in_em-blank_space_in_em;

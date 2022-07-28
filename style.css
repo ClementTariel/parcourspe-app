@@ -16,18 +16,21 @@ body
 
 #container{
 	margin: 1em;
-	width: fit-content;
+	width: auto;
+	display: flex;
+    align-items: flex-start;
+    justify-content: center;
 }
 
 .panel{
 	color: black;
 	border: 1px solid black;
 	border-radius: 1em;
-	margin: 0.5em 0.25em 0 0.25em;
 	padding: 1em;
   	display: flex;
   	align-items: center;
   	height: fit-content;
+  	margin: 0.5em 0.25em 0 0.25em;
 }
 
 #predictionPanel{
@@ -101,7 +104,7 @@ button{
 	color: black;
 	background-color: #EEEEEE;/*light grey*/
 	border: 1px solid black;
-	border-radius: 0.25em;
+	border-radius: 0.5em;
 }
 
 .inlineBlockWrapper{
@@ -145,24 +148,25 @@ button{
     border-radius: 0.25em;
 }
 
+#menu{
+	height: fit-content;
+}
+
 #menu ul
 {
 	list-style-type: none;
 	margin: 0;
 	padding: 0;
 	overflow: hidden;
-	/*background-color: #EEEEEE;/*light grey*/
-	border-left: 1px solid black;
+	width: 100%;
+	background-color: #EEEEEE;/*light grey*/
 }
 
 #menu li
 {
 	float: left;
 	background-color: #EEEEEE;/*light grey*/
-	border-width: 1px 1px 1px 0; /* top right bottom left */
-	border-style: solid;
-	border-color: black;
-
+	border-bottom: 1px solid black;
 }
 
 #menu li a
@@ -170,10 +174,7 @@ button{
 	display: block;
 	color: black;
 	text-align: center;
-	padding-left: 1em;
-	padding-right: 1em;
-	padding-top: 1em;
-	padding-bottom: 1em;
+	padding: 0.5em;
 	text-decoration: none;/*to avoid underlined links*/
 }
 
@@ -181,15 +182,119 @@ button{
 {
 	display: inline-block;
 	text-align: center;
-	padding-left: 1em;
-	padding-right: 1em;
-	padding-top: 1em;
-	padding-bottom: 1em;
+	padding: 0.5em;
 }
 
-/* change color*/
-#menu li a:hover
+#rightMenu
 {
+	float: none !important;
+	overflow: hidden !important;
+	border-bottom:1px solid black;
+}
+
+#textOnTheRightInRightMenu{
+	margin-left: -2em;
+	width: fit-content;
+	float: right;
+}
+
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
+}
+
+.currentPageMenu
+{
+	border-bottom: 1px solid white !important;
+	border-right: 1px solid black !important;
+	border-left: 1px solid black !important;
+	background-color: white !important;
+	border-radius: 0;
+	pointer-events: none !important;
+}
+
+.clickableMenu a:hover
+{
+	/*-webkit-box-shadow:inset 0px 0px 0px 1px black;
+    -moz-box-shadow:inset 0px 0px 0px 1px black;
+    box-shadow:inset 0px 0px 0px 1px black;*/
+	/*border-radius: 2em;*/
+	/*border-bottom: 1px solid #212cff !important;*/
+	border-right: 1px solid black !important;
+	border-left: 1px solid black !important;
+	border-top: 1px solid black !important;
 	background-color: #212cff;/*dark blue*/
-	color: #ffffff;/*white text*/
+	color: white !important;/*white text*/
+}
+
+#etabList{
+	padding: 0;
+	width: 100%;
+	list-style-type: none;
+	margin-top: 2em;
+}
+
+#etabList li{
+	margin: 0;
+	color: black;
+	height: fit-content;
+	display: flex;
+	flex: 1 1 auto;
+	align-content: center;
+	justify-content: center;
+	align-items: center;
+	align-content: center;
+	padding: auto;
+}
+
+#etabList div{
+	width: 100%;
+	padding-right:0;
+}
+
+#etabList li span{
+	width: auto;
+	height: fit-content;
+	padding: 0;
+	border: 1px solid black;
+	border-radius: 2em;
+	display: flex;
+	margin: 0.25em 1em 0.25em 1em;
+	background-color: #EEEEEE;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+}
+
+#etabList li span:not(#plus){
+	flex: 1 0 auto;
+}
+
+#etabList input{
+	margin: 1em;
+	padding: 0;
+}
+
+#plus{
+	flex: 0 1 auto;
+	margin-right: -0.5em !important;
+}
+
+#etabList a{
+	border-radius: 2em;
+	display: block;
+	width: auto;
+	height: 100%;
+	padding-right: auto;
+	padding-left: auto;
+	padding: 1em;
+	color: black;
+	text-align: center !important;
+	text-decoration: none !important;/*to avoid underlined links*/
 }

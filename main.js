@@ -22,6 +22,9 @@ function createWindow (width,height) {
     minWidth: 400,
     maxWidth: 1500,*/
     webPreferences: {
+      /*nodeIntegration: false, // is default value after Electron v5
+      contextIsolation: true, // protect against prototype pollution
+      enableRemoteModule: false, // turn off remote*/
       preload: path.join(__dirname, 'preload.js')
     }
   });
@@ -58,10 +61,8 @@ ipcMain.on("requestPoints", (event, etab_id) => {
     data = {};
     store.set('data',data);
   }
-  if (!(etab_id in data)){
-    data[etab_id.toString()] = {};
-    data[etab_id.toString()]["points"]=[];
-    store.set('data',data);
+  if (etab_id=="NaN" || !data.hasOwnProperty(etab_id.toString())){
+    mainWindow.webContents.send("sendPoints", null);
   }
   mainWindow.webContents.send("sendPoints", data[etab_id.toString()]["points"]);
 });
@@ -70,14 +71,8 @@ ipcMain.on("addRank", (event, args) => {
   let etab_id = args["etab_id"];
   let point = args["point"];
   let data = store.get('data');
-  if (data == null){
-    data = {};
-    store.set('data',data);
-  }
-  if (!(etab_id in data)){
-    data[etab_id.toString()] = {};
-    data[etab_id.toString()]["points"]=[];
-    store.set('data',data);
+  if (data == null || !data.hasOwnProperty(etab_id.toString())){
+    return;
   }
   let points = store.get("data."+etab_id+".points");
   let ndays = point[0];
@@ -111,14 +106,8 @@ ipcMain.on("deletePoint", (event, args) => {
   let etab_id = args["etab_id"];
   let ndays = args["ndays"];
   let data = store.get('data');
-  if (data == null){
-    data = {};
-    store.set('data',data);
-  }
-  if (!(etab_id in data)){
-    data[etab_id.toString()] = {};
-    data[etab_id.toString()]["points"]=[];
-    store.set('data',data);
+  if (data == null || !data.hasOwnProperty(etab_id.toString())){
+    return;
   }
   let points = store.get("data."+etab_id+".points");
   for (let i=0; i<points.length; i++){
@@ -128,4 +117,46 @@ ipcMain.on("deletePoint", (event, args) => {
       return;
     } 
   }
+});
+
+ipcMain.on("addEtab", (event, etab_name) => {
+  etab_name = etab_name.replace(/\s/g, '');
+  if (etab_name.length > 0){
+    let data = store.get('data');
+    if (data == null){
+      data = {};
+      store.set('data',data);
+    }
+    let etab_id = 0;
+    while (data.hasOwnProperty(etab_id.toString())){
+      etab_id++;
+    }
+    //store.set('data.'+etab_id.toString(),{});
+    data[etab_id.toString()] = {"name": etab_name, "points": []};
+    store.set('data',data);
+    mainWindow.webContents.send("sendEtabId", etab_id);
+  }else{
+    mainWindow.webContents.send("sendEtabId", -1);
+  }
+  
+
+});
+
+ipcMain.on("requestEtabs", (event,arg) => {
+  //reset for the tests
+  //store.set('data',null);
+  let data = store.get('data');
+  if (data == null){
+    data = {};
+    store.set('data',data);
+  }
+  //console.log(data);
+  let etabs = [];
+  let keys = Object.keys(data);
+  for (let i=0; i<keys.length; i++){
+    let key = keys[i];
+    etabs.push([key,data[key]['name']]);
+  }
+  mainWindow.webContents.send("sendEtabs", etabs);
+
 });
