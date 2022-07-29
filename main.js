@@ -120,8 +120,7 @@ ipcMain.on("deletePoint", (event, args) => {
 });
 
 ipcMain.on("addEtab", (event, etab_name) => {
-  etab_name = etab_name.replace(/\s/g, '');
-  if (etab_name.length > 0){
+  if (etab_name.replace(/\s/g, '').length > 0){
     let data = store.get('data');
     if (data == null){
       data = {};
@@ -159,4 +158,12 @@ ipcMain.on("requestEtabs", (event,arg) => {
   }
   mainWindow.webContents.send("sendEtabs", etabs);
 
+});
+
+ipcMain.on("changeEtabName", (event,args) => {
+  let etab_id = args["etab_id"];
+  let etab_name = args["name"];
+  if (etab_name.replace(/\s/g, '').length > 0){
+    store.set('data.'+etab_id.toString()+'.name',etab_name);
+  }
 });

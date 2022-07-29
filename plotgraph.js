@@ -105,6 +105,12 @@ function updateCanvas(x,y){
             txt_offset_y *= 3;
         }
 
+        /*if (coeffs!=null && coeffs.length>0){
+            for (let i=0; i<coeffs.length; i++){
+                plotPrediction(canvas,coeffs[i].alpha,coeffs[i].beta,coeffs[i].unSurTau,error);
+            }
+        }*/
+        
         plotPrediction(canvas,alpha,beta,unSurTau,error);
         plotPoints(canvas,points);
 
@@ -320,7 +326,6 @@ function plotPrediction(canvas,alpha,beta,unSurTau,error){
         x_i = next_x
     }
     ctx.stroke();
-
 }
 
 function plotPoints(canvas,points){

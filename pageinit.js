@@ -37,11 +37,11 @@ function goToToday(){
 }
 
 function updatePredictedValue(){
-	if (points == null || points.length == 0 || error || alpha == null || beta == null || unSurTau == null){
+	if (points == null || points.length == 0 || error || coeffs==null || coeffs[0]==null || coeffs[0].alpha==null || coeffs[1]==null || coeffs[1].alpha==null|| coeffs[2]==null || coeffs[2].alpha==null ){
         return;
     }
-	let t_0_min = inverse_f1(alpha,beta,unSurTau,0.5);
-	let t_0_max = inverse_f1(alpha,beta,unSurTau,-0.5);
+	let t_0_min = inverse_f1(coeffs[1].alpha,coeffs[1].beta,coeffs[1].unSurTau,0.5);
+	let t_0_max = inverse_f1(coeffs[1].alpha,coeffs[1].beta,coeffs[1].unSurTau,-0.5);
 	let prediction_message = "";
 	let warning_message = (points == null || points.length < 6) ? " (données insuffisantes)" : ""
 	let predictedValue = document.getElementById("predictedValue");
@@ -180,12 +180,17 @@ function updateCoeffs(){
 	if (points == null || points.length==0){
 		return;
 	}
-	let coeffs = computeCoeffs(points);
-	error = coeffs.error;
-	alpha = coeffs.alpha;
-	beta = coeffs.beta;
-	unSurTau = coeffs.unSurTau;
-	updatePredictedValue();
+	coeffs = computeCoeffs(points);
+	if (!(coeffs==null || coeffs[0]==null || coeffs[0].alpha==null || coeffs[1]==null || coeffs[1].alpha==null|| coeffs[2]==null || coeffs[2].alpha==null)){
+		error = coeffs[0].error || coeffs[1].error || coeffs[2].error;
+		alpha = coeffs[1].alpha;
+		beta = coeffs[1].beta;
+		unSurTau = coeffs[1].unSurTau;
+		updatePredictedValue();
+	}
 }
 
 updateCoeffs();
+if (!first_page_refreshed){
+	goToToday();
+}

@@ -27,7 +27,7 @@
 			<div style="width: fit-content;">
 				<div id="predictionPanel" class="panel">
 					<div >
-						<span>prédiction pour </span><span id="etabName">[Loading ...] : </span><span id="predictedValue">Données insuffisantes.</span>
+						<span>prédiction pour </span><input id="etabName" type="text" name="etabName" value="[Loading ...]" onkeyup="if(event.key === 'Enter'){this.blur();}" onblur="if(this.value.replace(/\s/g, '').length > 0){etab_name=this.value;window.api.send('changeEtabName', {'etab_id':etab_id, 'name':etab_name});}else{this.value=etab_name;}" /><span > : </span><span id="predictedValue">Données insuffisantes.</span>
 					</div>
 				</div>
 				<div id="subBlock1">

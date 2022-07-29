@@ -144,7 +144,7 @@ button{
 .emptyField{
 	outline: none !important;
     border:2px solid #FF7070 !important;
-    box-shadow: 0 0 0.25em #719ECE !important;
+    box-shadow: 0 0 0.5em #719ECE !important;
     border-radius: 0.25em;
 }
 
@@ -239,7 +239,7 @@ button{
 	margin-top: 2em;
 }
 
-#etabList li{
+#etabList li:not([hidden]){
 	margin: 0;
 	color: black;
 	height: fit-content;
@@ -257,7 +257,7 @@ button{
 	padding-right:0;
 }
 
-#etabList li span{
+#etabList li span:not([hidden]){
 	width: auto;
 	height: fit-content;
 	padding: 0;
@@ -272,11 +272,11 @@ button{
 	justify-content: center;
 }
 
-#etabList li span:not(#plus){
+#etabList li span:not(#plus):not([hidden]){
 	flex: 1 0 auto;
 }
 
-#etabList input{
+#etabList input:not([hidden]){
 	margin: 1em;
 	padding: 0;
 }
@@ -284,6 +284,23 @@ button{
 #plus{
 	flex: 0 1 auto;
 	margin-right: -0.5em !important;
+}
+
+#addEtab a,#plus a, #spanInput, #newEtabName{
+	background-color: #303038 !important;
+	color: #ffffff !important;/*white text*/
+}
+
+#etabList a:hover{
+	background-color: #212cff !important;/*dark blue*/
+	color: #ffffff;/*white text*/
+}
+
+input:focus { 
+    outline: none !important;
+    border-color: #212cff;/*dark blue*/
+    box-shadow: 0 0 0.5em #40F0B0;
+    border-radius: 0.25em;
 }
 
 #etabList a{

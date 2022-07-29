@@ -29,9 +29,13 @@
 		</header>
 		<div id="container">
 			<ul id="etabList">
-				<li>
-					<span id="plus"><a onclick="window.api.send('addEtab',document.getElementById('newEtabName').value);"> &nbsp;+&nbsp; </a></span>
-					<span><input id="newEtabName" type="text" name="" style="width:100%" size="1"></span>
+				<li id="enterEtabName">
+					<script type="text/javascript">document.getElementById('enterEtabName').hidden=true;</script>
+					<span id="plus"><a onclick="window.api.send('addEtab',document.getElementById('newEtabName').value);return false;" href="index.html"> &nbsp;+&nbsp; </a></span>
+					<span id="spanInput"><input id="newEtabName" type="text" name="" style="width:100%" size="1" placeholder="Nom du vœu" onkeyup="if(event.key === 'Enter'){document.getElementById('plus').childNodes[0].click();}"></span>
+				</li>
+				<li id="addEtab">
+					<span><div><a onclick="document.getElementById('addEtab').hidden = true;document.getElementById('enterEtabName').hidden = false;document.getElementById('newEtabName').focus();return false" href="index.html">Ajouter un vœu</a></div></span>
 				</li>
 			</ul>
 		</div>
