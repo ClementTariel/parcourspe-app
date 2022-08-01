@@ -2,6 +2,16 @@ var yyyy = date.getFullYear();
 dateSelector.min = yyyy+'-'+mm_min+'-'+dd_min;
 dateSelector.max = yyyy+'-'+mm_max+'-'+dd_max;
 
+var deletePanel = document.getElementById('deletePanel');
+var mainPanel = document.getElementById('mainPanel');
+var secondPanel = document.getElementById('secondPanel');
+//deletePanel.style.marginTop = parseInt(canvas.clientHeight*(visible_height_in_em-0.25/*margin*/)/canvas_height_in_em
+//	- mainPanel.clientHeight - secondPanel.clientHeight)
+//	+ "px";
+
+// adapt to different screen sizes
+//alert(mainPanel.offsetWidth/pageEmToPixels);
+
 function displayRank(d,m){
 	let n = countDays(parseInt(dd_min),parseInt(mm_min),d,m);
 	let rank = "";

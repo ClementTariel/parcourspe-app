@@ -35,6 +35,7 @@ body
 
 #predictionPanel{
 	width: auto;
+	padding: auto !important;
 	flex-direction: row;
 	justify-content: center;
 
@@ -42,7 +43,6 @@ body
 
 #mainPanel{
 	width: auto;
-	height: auto !important;
 	margin-top: 0 !important;
 	padding-bottom: 0 !important;
 	padding-left: 0.5em !important;
@@ -52,7 +52,6 @@ body
 
 #secondPanel{
 	width: auto;
-	height: fit-content !important;
 	flex-direction: column;
 	/*margin-bottom: auto !important;*/
 	margin-bottom: 0;
@@ -61,7 +60,6 @@ body
 #deletePanel{
 	width: 100%;
 	box-sizing: border-box;
-	height: fit-content !important;
 	border-color: #FF7070 !important;/*light red*/
 	padding-top: 0.25em !important;
 	padding-bottom: 0.25em !important;
@@ -76,6 +74,8 @@ body
 #twoMainPanels{
 	padding-top: 0.5em;
 	padding-bottom: 0;
+	display: flex;
+	flex-direction: row;
 }
 
 #subBlock1{
