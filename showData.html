@@ -27,7 +27,7 @@
 			<div style="width: fit-content;">
 				<div id="predictionPanel" class="panel">
 					<div >
-						<span>prédiction pour </span><input id="etabName" type="text" name="etabName" value="[Loading ...]" onkeyup="if(event.key === 'Enter'){this.blur();}" onblur="if(this.value.replace(/\s/g, '').length > 0){etab_name=this.value;window.api.send('changeEtabName', {'etab_id':etab_id, 'name':etab_name});}else{this.value=etab_name;}" /><span > : </span><span id="predictedValue">Données insuffisantes.</span>
+						<span>prédiction pour </span><input id="etabName" type="text" name="etabName" value="[Loading ...]" onkeyup="if(event.key === 'Enter'){this.blur();}" onblur="if(this.value.replace(/\s/g, '').length > 0){etab_name=this.value;if(window.is_using_electron){window.api.send('changeEtabName', {'etab_id':etab_id, 'name':etab_name})}else{changeEtabName(etab_id,etab_name);};}else{this.value=etab_name;}" /><span > : </span><span id="predictedValue">Données insuffisantes.</span>
 					</div>
 				</div>
 				<div id="subBlock1">
@@ -146,7 +146,11 @@
 																alert(consistencyErrorMessage);
 															}else{
 																points[i][1] = rank;
-																window.api.send("addRank", {"etab_id":etab_id,"point":[ndays,rank]});
+																if(window.is_using_electron){
+																	window.api.send("addRank", {"etab_id":etab_id,"point":[ndays,rank]});
+																}else{
+																	addRank(etab_id,[ndays,rank]);
+																}
 																let today = date.toLocaleDateString('en-CA');
 																let parts = today.split('-');
 																if (parseInt(mm_selected)<parseInt(parts[1])||
@@ -165,7 +169,11 @@
 													}
 												}
 												points.splice(i, 0, [ndays,rank]);
-												window.api.send("addRank", {"etab_id":etab_id,"point":[ndays,rank]});
+												if(window.is_using_electron){
+													window.api.send("addRank", {"etab_id":etab_id,"point":[ndays,rank]});
+												}else{
+													addRank(etab_id,[ndays,rank]);
+												}
 												let today = date.toLocaleDateString('en-CA');
 												let parts = today.split('-');
 												if (parseInt(mm_selected)<parseInt(parts[1])||
@@ -187,7 +195,11 @@
 														points.splice(i, 1);
 														document.getElementById("rank").value = "";
 														updateButtonsHover()
-														window.api.send("deletePoint", {"etab_id":etab_id,"ndays":ndays});
+														if(window.is_using_electron){
+															window.api.send("deletePoint", {"etab_id":etab_id,"ndays":ndays});
+														}else{
+															deletePoint(etab_id,ndays);
+														}
 														updateCoeffs();
 														updateCanvas(-1,-1);
 														return;

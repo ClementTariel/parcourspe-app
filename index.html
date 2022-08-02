@@ -31,7 +31,7 @@
 			<ul id="etabList">
 				<li id="enterEtabName">
 					<script type="text/javascript">document.getElementById('enterEtabName').hidden=true;</script>
-					<span id="plus"><a onclick="window.api.send('addEtab',document.getElementById('newEtabName').value);return false;" href="index.html"> &nbsp;+&nbsp; </a></span>
+					<span id="plus"><a onclick="if(window.is_using_electron){window.api.send('addEtab',document.getElementById('newEtabName').value)}else{addEtab(document.getElementById('newEtabName').value);};return false;" href="index.html"> &nbsp;+&nbsp; </a></span>
 					<span id="spanInput"><input id="newEtabName" type="text" name="" style="width:100%" size="1" placeholder="Nom du vœu" onkeyup="if(event.key === 'Enter'){document.getElementById('plus').childNodes[0].click();}"></span>
 				</li>
 				<li id="addEtab">

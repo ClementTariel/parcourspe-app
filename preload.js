@@ -20,3 +20,4 @@ contextBridge.exposeInMainWorld(
         }
     }
 );
+contextBridge.exposeInMainWorld("is_using_electron", true);

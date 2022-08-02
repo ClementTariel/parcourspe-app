@@ -138,7 +138,6 @@ ipcMain.on("addEtab", (event, etab_name) => {
     mainWindow.webContents.send("sendEtabId", -1);
   }
   
-
 });
 
 ipcMain.on("requestEtabs", (event,arg) => {

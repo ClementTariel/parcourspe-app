@@ -11,8 +11,34 @@ var unSurTau = null;
 var error = null;
 var coeffs = null;
 var first_page_refreshed = false;
-window.api.send("requestPoints", etab_id);
-window.api.receive("sendPoints", (data) => {
+if(window.is_using_electron){
+	window.api.send("requestPoints", etab_id);
+	window.api.receive("sendPoints", (data) => {
+		if (data == null){
+			window.location.replace("index.html");
+		}else{
+			points = data["points"];
+			etab_name = data["name"];
+			document.getElementById("etabName").value = /*sanitize*/(etab_name);
+			let coeffs = computeCoeffs(points);
+			if (!(coeffs==null || coeffs[0]==null || coeffs[0].alpha==null || coeffs[1]==null || coeffs[1].alpha==null|| coeffs[2]==null || coeffs[2].alpha==null)){
+				error = coeffs[0].error || coeffs[1].error || coeffs[2].error;
+				alpha = coeffs[1].alpha;
+				beta = coeffs[1].beta;
+				unSurTau = coeffs[1].unSurTau;
+			}
+			updatePredictedValue();
+			if (typeof updateCanvas === "function" && typeof goToToday === "function" && !first_page_refreshed){
+				first_page_refreshed = true;
+				goToToday();
+			}
+			if(typeof updateCoeffs === "function"){
+				updateCoeffs();
+			}
+		}
+	});
+}else{
+	getPoints(etab_id);
 	if (data == null){
 		window.location.replace("index.html");
 	}else{
@@ -35,7 +61,7 @@ window.api.receive("sendPoints", (data) => {
 			updateCoeffs();
 		}
 	}
-});
+}
 
 var dateSelector = document.getElementById('dateSelector');
 
