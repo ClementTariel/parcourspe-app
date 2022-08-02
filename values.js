@@ -27,7 +27,9 @@ if(window.is_using_electron){
 				beta = coeffs[1].beta;
 				unSurTau = coeffs[1].unSurTau;
 			}
-			updatePredictedValue();
+			if (typeof updatePredictedValue === "function"){
+				updatePredictedValue();
+			}
 			if (typeof updateCanvas === "function" && typeof goToToday === "function" && !first_page_refreshed){
 				first_page_refreshed = true;
 				goToToday();
@@ -38,7 +40,7 @@ if(window.is_using_electron){
 		}
 	});
 }else{
-	getPoints(etab_id);
+	var data = getPoints(etab_id);
 	if (data == null){
 		window.location.replace("index.html");
 	}else{
@@ -52,7 +54,9 @@ if(window.is_using_electron){
 			beta = coeffs[1].beta;
 			unSurTau = coeffs[1].unSurTau;
 		}
-		updatePredictedValue();
+		if (typeof updatePredictedValue === "function"){
+			updatePredictedValue();
+		}
 		if (typeof updateCanvas === "function" && typeof goToToday === "function" && !first_page_refreshed){
 			first_page_refreshed = true;
 			goToToday();

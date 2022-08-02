@@ -27,11 +27,12 @@
 			</script>
 			
 		</header>
+		<script type="text/javascript" src="accessstorage.js"></script>
 		<div id="container">
 			<ul id="etabList">
 				<li id="enterEtabName">
 					<script type="text/javascript">document.getElementById('enterEtabName').hidden=true;</script>
-					<span id="plus"><a onclick="if(window.is_using_electron){window.api.send('addEtab',document.getElementById('newEtabName').value)}else{addEtab(document.getElementById('newEtabName').value);};return false;" href="index.html"> &nbsp;+&nbsp; </a></span>
+					<span id="plus"><a onclick="if(window.is_using_electron){window.api.send('addEtab',document.getElementById('newEtabName').value);return false;}else{var etab_id=addEtab(document.getElementById('newEtabName').value);if(etab_id<0){alert('Nom invalide !');return false;}else{this.href='showData.html?i='+etab_id;return true;}}" href="index.html"> &nbsp;+&nbsp; </a></span>
 					<span id="spanInput"><input id="newEtabName" type="text" name="" style="width:100%" size="1" placeholder="Nom du vœu" onkeyup="if(event.key === 'Enter'){document.getElementById('plus').childNodes[0].click();}"></span>
 				</li>
 				<li id="addEtab">
