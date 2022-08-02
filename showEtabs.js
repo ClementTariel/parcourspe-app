@@ -20,14 +20,10 @@ if(window.is_using_electron){
     
   });
 }else{
-  let etabs = getEtabs();
-  if(etabs != null && etabs.length>0){
-    for (let i=0; i<etabs.length; i++){
-      let etab = etabs[i];
-      let etab_id = etab[0];
-      let etab_name = etab[1];
-      insertElement("etabList",createElement(etab_id,etab_name));
-    }
+  var etabsUnset = true;
+  if (typeof setEtabs === "function"){
+    etabsUnset = false;
+    setEtabs();
   }
 }
 

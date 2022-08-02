@@ -66,7 +66,7 @@ if (!window.is_using_electron){
 		}
 	}
 
-	function getEtabs(){
+	function setEtabs(){
 		let data = JSON.parse(window.localStorage.getItem('data')); 
 		if (data == null){
 			data = {};
@@ -78,7 +78,14 @@ if (!window.is_using_electron){
 			let key = keys[i];
 			etabs.push([key,data[key]['name']]);
 		}
-		return etabs;
+		if(etabs != null && etabs.length>0){
+		    for (let i=0; i<etabs.length; i++){
+				let etab = etabs[i];
+				let etab_id = etab[0];
+				let etab_name = etab[1];
+				insertElement("etabList",createElement(etab_id,etab_name));
+			}
+		}
 	}
 
 	function addEtab(etab_name){
@@ -111,5 +118,9 @@ if (!window.is_using_electron){
 			data[etab_id.toString()]["name"] = etab_name;
 			window.localStorage.setItem('data',JSON.stringify(data));
 		}
+	}
+
+	if (etabsUnset){
+		setEtabs();
 	}
 }
