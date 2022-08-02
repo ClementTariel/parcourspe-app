@@ -188,8 +188,8 @@ window.addEventListener('resize', debounce(() => organizeScreen(),
 250, false), false);
 
 
-const ref_canvas_height_in_em = 19.5;
-const ref_canvas_width_in_em = 32;
+const ref_canvas_height_in_em = 21;
+const ref_canvas_width_in_em = 35;
 var canvas_height_in_em = ref_canvas_height_in_em;
 var canvas_width_in_em = ref_canvas_width_in_em;
 var blank_space_in_em = 1.5;
