@@ -65,7 +65,7 @@
 										function checkRankValidity(evt){
 											evt = (evt) ? evt : window.event;
 										    var charCode = (evt.which) ? evt.which : evt.keyCode;
-										    if (evt.code === "Enter"){
+										    if (evt.key === "Enter"){
 										    	if (document.getElementById("rank").value.length > 0){
 										    		addRankButtonClicked();
 										    	}else{
