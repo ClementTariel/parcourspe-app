@@ -120,7 +120,7 @@ if (!window.is_using_electron){
 		}
 	}
 
-	if (etabsUnset){
+	if (typeof window.etabsUnset !== "undefined" && window.etabsUnset){
 		setEtabs();
 	}
 }
