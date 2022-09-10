@@ -107,6 +107,18 @@ if (!window.is_using_electron){
 		}
 	}
 
+	function delEtab(etab_id){
+		let data = JSON.parse(window.localStorage.getItem('data')); 
+		if (data == null){
+			data = {};
+			window.localStorage.setItem('data',JSON.stringify(data));
+		}
+		if(data.hasOwnProperty(etab_id.toString())){
+			delete data[etab_id.toString()];
+			window.localStorage.setItem('data',JSON.stringify(data));
+		}
+	}
+
 	function changeEtabName(etab_id,etab_name){
 		let data = JSON.parse(window.localStorage.getItem('data')); 
 		if (data == null){

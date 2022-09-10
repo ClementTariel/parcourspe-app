@@ -140,6 +140,18 @@ ipcMain.on("addEtab", (event, etab_name) => {
   
 });
 
+ipcMain.on("delEtab", (event, etab_id) => {
+  let data = store.get('data');
+  if (data == null){
+    data = {};
+    store.set('data',data);
+  }
+  if(data.hasOwnProperty(etab_id.toString())){
+    delete data[etab_id.toString()];
+    store.set('data',data);
+  }
+});
+
 ipcMain.on("requestEtabs", (event,arg) => {
   //reset for the tests
   //store.set('data',null);
