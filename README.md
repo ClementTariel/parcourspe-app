@@ -6,7 +6,7 @@ This project provides a website in which you can enter your daily ParcourSup ran
 
 From this data a model is computed which gives a predicted date of admission.
 
-At first the project was supposed to have both a backend and a frontend but I had some issues with the harware used to host the backend.
+At first the project was supposed to have both a backend and a frontend but I had some issues with the harware used to host the backend. Now there is only the frontend left so all the code is run directly on your computer.
 
 Anyways, I had not implemented yet the finetuning of the predictions (that would be done by regrouping for each establishement the data of every user ranked there) so it does not change much.
 	
@@ -27,6 +27,7 @@ The process is quite simple : the evolution of the ranking is assumed to have an
 ## Known issues
 
 - The model is not proven to be accurate.
+- There is no session system so 2 people can not seperate their data if they use the same browser on the same computer.
 - I did not know react when I started the project so it is pure html, css and js. On top of that the code s not very well documented (and sometimes css properties are changed from js) so maintainability is not great.
 - Depending on the browser used there might be some weird rendering.
 - Some functionnalities are still missing.
