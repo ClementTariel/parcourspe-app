@@ -12,6 +12,7 @@ var error = null;
 var a = null;
 var b = null;
 var coeffs = null;
+var method = "middle";
 var first_page_refreshed = false;
 if(window.is_using_electron){
 	window.api.send("requestPoints", etab_id);
@@ -23,7 +24,6 @@ if(window.is_using_electron){
 			etab_name = data["name"];
 			document.getElementById("etabName").value = /*sanitize*/(etab_name);
 			let coeffs = computeCoeffs(points);
-			method = "middle"
 			if (!(coeffs==null || coeffs["min"]==null || coeffs["min"].alpha==null || coeffs["min"].a==null || coeffs["min"].b==null 
 			|| coeffs["middle"]==null || coeffs["middle"].alpha==null || coeffs["middle"].a==null || coeffs["middle"].b==null
 			|| coeffs["max"]==null || coeffs["max"].alpha==null || coeffs["max"].a==null || coeffs["max"].b==null)){
@@ -55,7 +55,6 @@ if(window.is_using_electron){
 		etab_name = data["name"];
 		document.getElementById("etabName").value = /*sanitize*/(etab_name);
 		let coeffs = computeCoeffs(points);
-		method = "middle"
 		if (!(coeffs==null || coeffs["min"]==null || coeffs["min"].alpha==null || coeffs["min"].a==null || coeffs["min"].b==null 
 		|| coeffs["middle"]==null || coeffs["middle"].alpha==null || coeffs["middle"].a==null || coeffs["middle"].b==null
 		|| coeffs["max"]==null || coeffs["max"].alpha==null || coeffs["max"].a==null || coeffs["max"].b==null)){
