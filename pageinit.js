@@ -47,12 +47,12 @@ function goToToday(){
 }
 
 function updatePredictedValue(){
-	if (points == null || points.length == 0 || error || coeffs==null || coeffs["min"]==null || coeffs["min"].alpha==null || coeffs["middle"]==null || coeffs["middle"].alpha==null|| coeffs["max"]==null || coeffs["max"].alpha==null ){
+	if (points == null || points.length == 0 || error || coeffs==null || alpha==null || beta==null || unSurTau==null || a==null || b==null ){
         return;
     }
-	let f2_offset = f2(coeffs[method].a,coeffs[method].b,points[points.length-1][0]) - points[points.length-1][1];
-	let t_0_min = inverse_f2(coeffs[method].a,coeffs[method].b - f2_offset,0.5);
-	let t_0_max = inverse_f1(coeffs[method].alpha,coeffs[method].beta,coeffs[method].unSurTau,-0.5);
+	let f2_offset = f2(a,b,points[points.length-1][0]) - points[points.length-1][1];
+	let t_0_min = inverse_f2(a,b - f2_offset,0.5);
+	let t_0_max = inverse_f1(alpha,beta,unSurTau,-0.5);
 	let prediction_message = "";
 	let warning_message = (points == null || points.length < 6) ? " (données insuffisantes)" : ""
 	let predictedValue = document.getElementById("predictedValue");
