@@ -26,7 +26,7 @@ if(window.is_using_electron){
 			method = "middle"
 			if (!(coeffs==null || coeffs["min"]==null || coeffs["min"].alpha==null || coeffs["min"].a==null || coeffs["min"].b==null 
 			|| coeffs["middle"]==null || coeffs["middle"].alpha==null || coeffs["middle"].a==null || coeffs["middle"].b==null
-			|| coeffs["max"]==null || coeffs["max"].alpha==null || coeffs["mzx"].a==null || coeffs["max"].b==null)){
+			|| coeffs["max"]==null || coeffs["max"].alpha==null || coeffs["max"].a==null || coeffs["max"].b==null)){
 				error = coeffs["min"].error || coeffs["middle"].error || coeffs["max"].error;
 				alpha = coeffs[method].alpha;
 				beta = coeffs[method].beta;
@@ -58,7 +58,7 @@ if(window.is_using_electron){
 		method = "middle"
 		if (!(coeffs==null || coeffs["min"]==null || coeffs["min"].alpha==null || coeffs["min"].a==null || coeffs["min"].b==null 
 		|| coeffs["middle"]==null || coeffs["middle"].alpha==null || coeffs["middle"].a==null || coeffs["middle"].b==null
-		|| coeffs["max"]==null || coeffs["max"].alpha==null || coeffs["mzx"].a==null || coeffs["max"].b==null)){
+		|| coeffs["max"]==null || coeffs["max"].alpha==null || coeffs["max"].a==null || coeffs["max"].b==null)){
 			error = coeffs["min"].error || coeffs["middle"].error || coeffs["max"].error;
 			alpha = coeffs[method].alpha;
 			beta = coeffs[method].beta;
