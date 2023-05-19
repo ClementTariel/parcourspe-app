@@ -333,7 +333,8 @@ function plotPrediction(canvas,alpha,beta,unSurTau,a,b,error){
         return;
     }
     plotf((x)=>f1(alpha,beta,unSurTau,x),'orange');
-    plotf((x)=>f2(a,b,x),'green');
+    let f2_offset = f2(coeffs[method].a,coeffs[method].b,points[points.length-1][0]) - points[points.length-1][1];
+    plotf((x)=>f2(a,b - f2_offset,x),'green');
 }
 
 function plotPoints(canvas,points){
