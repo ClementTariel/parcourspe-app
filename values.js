@@ -9,6 +9,8 @@ var alpha = null;
 var beta = null;
 var unSurTau = null;
 var error = null;
+var a = null;
+var b = null;
 var coeffs = null;
 var first_page_refreshed = false;
 if(window.is_using_electron){
