@@ -1,5 +1,9 @@
 # parcourspe-app
 
+## Development currently on hold
+
+I'm no longer actively contributing to the project.
+
 ## A simple website to (try to) predict ParcourSup ranking evolution
 
 This project provides a website in which you can enter your daily ParcourSup rankings.
@@ -27,9 +31,8 @@ The process is quite simple : the evolution of the ranking is assumed to have an
 ## Known issues
 
 - The model is not proven to be accurate.
+- The project is not up to date with the latest improvements of ParcourSup.
 - There is no session system so 2 people can not seperate their data if they use the same browser on the same computer.
-- I did not know react when I started the project so it is pure html, css and js. On top of that the code s not very well documented (and sometimes css properties are changed from js) so maintainability is not great.
+- I did not know any framework when I started the project so it is pure html, css and js. On top of that the code is not very well documented so maintainability is not great (spaghetti code everywhere).
 - Depending on the browser used there might be some weird rendering.
 - Some functionnalities are still missing.
-
-Development is currently on hold.
