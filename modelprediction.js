@@ -134,12 +134,14 @@ function computeCoeffs(Input){
 		let XSum = SmoothInput[0][0];
 		let lastY = SmoothInput[0][1];
 		let sameYCount = 1;
+		var weight = [];
 		for (let i = 1; i<SmoothInput.length; i++){
 			while(i<SmoothInput.length && SmoothInput[i][1] == lastY){
 				XSum += SmoothInput[i][0]
 				sameYCount ++;
 				i++;
 			}
+			weight.push(sameYCount);
 			SmoothInputMiddle.push([XSum/sameYCount,lastY]);
 			if(i<SmoothInput.length){
 				XSum = SmoothInput[i][0];
@@ -166,11 +168,13 @@ function computeCoeffs(Input){
 	var DSmoothInputMin = [];
 	var DSmoothInputMiddle = [];
 	var DSmoothInputMax = [];
+	var DWeights = [];
 	if (SmoothInput.length > 1){
 		for (let i = 0; i<SmoothInput.length-1; i++){
 			DSmoothInput.push([(SmoothInput[i][0]+SmoothInput[i+1][0])/2,(SmoothInput[i+1][1]-SmoothInput[i][1])/(SmoothInput[i][0]-SmoothInput[i+1][0])]);
 		}
 		for (let i = 0; i<SmoothInputMiddle.length-1; i++){
+			DWeights.push(weight[i]+weight[i+1])
 			DSmoothInputMin.push([(SmoothInputMin[i][0]+SmoothInputMin[i+1][0])/2,(SmoothInputMin[i+1][1]-SmoothInputMin[i][1])/(SmoothInputMin[i][0]-SmoothInputMin[i+1][0])]);
 			DSmoothInputMiddle.push([(SmoothInputMiddle[i][0]+SmoothInputMiddle[i+1][0])/2,(SmoothInputMiddle[i+1][1]-SmoothInputMiddle[i][1])/(SmoothInputMiddle[i][0]-SmoothInputMiddle[i+1][0])]);
 			DSmoothInputMax.push([(SmoothInputMax[i][0]+SmoothInputMax[i+1][0])/2,(SmoothInputMax[i+1][1]-SmoothInputMax[i][1])/(SmoothInputMax[i][0]-SmoothInputMax[i+1][0])]);
@@ -194,14 +198,16 @@ function computeCoeffs(Input){
 		}
 	}
 	for (let i = 0; i<DSmoothInputMiddle.length; i++){
-		X3[0].push(DSmoothInputMin[i][0]);
-		Y3[0].push(Math.log(DSmoothInputMin[i][1]));
+		for (let j = 0; j<DWeights[i]; j++){
+			X3[0].push(DSmoothInputMin[i][0]);
+			Y3[0].push(Math.log(DSmoothInputMin[i][1]));
 
-		X3[1].push(DSmoothInputMiddle[i][0]);
-		Y3[1].push(Math.log(DSmoothInputMiddle[i][1]));
+			X3[1].push(DSmoothInputMiddle[i][0]);
+			Y3[1].push(Math.log(DSmoothInputMiddle[i][1]));
 
-		X3[2].push(DSmoothInputMax[i][0]);
-		Y3[2].push(Math.log(DSmoothInputMax[i][1]));
+			X3[2].push(DSmoothInputMax[i][0]);
+			Y3[2].push(Math.log(DSmoothInputMax[i][1]));
+		}	
 	}
 
 	/********************************************
