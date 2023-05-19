@@ -50,6 +50,14 @@ function updatePredictedValue(){
 	if (points == null || points.length == 0 || error || coeffs==null || alpha==null || beta==null || unSurTau==null || a==null || b==null ){
         return;
     }
+	
+	let prediction_message = "";
+	let warning_message = (points == null || points.length < 6) ? " (données insuffisantes)" : ""
+	if (points == null || points.length < 3){
+		prediction_message = "???";
+		predictedValue.innerHTML = prediction_message + warning_message;
+		return;
+	}
 	let f2_offset = f2(a,b,points[points.length-1][0]) - points[points.length-1][1];
 	let t_0_min = inverse_f2(a,b - f2_offset,0.5);
 	let t_0_max = inverse_f1(alpha,beta,unSurTau,-0.5);
@@ -57,8 +65,6 @@ function updatePredictedValue(){
 		t_0_max = inverse_f2(a,b - f2_offset,-0.5);
 		t_0_min = inverse_f1(alpha,beta,unSurTau,0.5);
 	}
-	let prediction_message = "";
-	let warning_message = (points == null || points.length < 6) ? " (données insuffisantes)" : ""
 	let predictedValue = document.getElementById("predictedValue");
 	if (t_0_min == null || t_0_min > countDays(parseInt(dd_min),parseInt(mm_min),6,9)){
 		prediction_message = "Non admis";
