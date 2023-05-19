@@ -57,7 +57,6 @@ function updatePredictedValue(){
 		t_0_max = inverse_f2(a,b - f2_offset,-0.5);
 		t_0_min = inverse_f1(alpha,beta,unSurTau,0.5);
 	}
-	console.log(a,b,f2_offset,t_0_min,t_0_max);
 	let prediction_message = "";
 	let warning_message = (points == null || points.length < 6) ? " (données insuffisantes)" : ""
 	let predictedValue = document.getElementById("predictedValue");
