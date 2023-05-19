@@ -302,7 +302,7 @@ function computeCoeffs(Input){
 			}
 		}
 		//alert(alpha+";"+beta+";"+unSurTau);
-		coeffs[k] =  {error:false, alpha:alpha, beta:beta, unSurTau:unSurTau,a:A, b:b};
+		coeffs[k] =  {error:false, alpha:alpha, beta:beta, unSurTau:unSurTau, a:a, b:b};
 	}
 	//return {error:false, alpha:alpha, beta:beta, unSurTau:unSurTau};
 	return {
