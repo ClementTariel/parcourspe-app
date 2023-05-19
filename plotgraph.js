@@ -333,7 +333,7 @@ function plotPrediction(canvas,alpha,beta,unSurTau,a,b,error){
         return;
     }
     plotf((x)=>f1(alpha,beta,unSurTau,x),'orange');
-    // plotf((x)=>f2(a,b,x),'green');
+    plotf((x)=>f2(a,b,x),'green');
     // let functionColor = 'orange';
     // let ctx = canvas.getContext('2d');
     // ctx.lineWidth = 1;
