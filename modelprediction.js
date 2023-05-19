@@ -47,7 +47,11 @@ function linearRegression(X,Y){
 
 function computeCoeffs(Input){
 	if(!Input.length>0){
-		return {error:true, alpha:0, beta:0, unSurTau:1};
+		return {
+			"min":{error:true, alpha:0, beta:0, unSurTau:1, a:0, b:0},
+			"middle":{error:true, alpha:0, beta:0, unSurTau:1, a:0, b:0},
+			"max":{error:true, alpha:0, beta:0, unSurTau:1, a:0, b:0}
+		};
 	}
 	/********************************************
 			moving average
@@ -188,8 +192,8 @@ function computeCoeffs(Input){
 	var X = [];
 	var Y = [];
 
-	var X3 = [[],[],[]];
-	var Y3 = [[],[],[]];
+	var X3 = [[],[],[],[]];
+	var Y3 = [[],[],[],[]];
 
 	for (let i = 0; i<DSmoothInput.length; i++){
 		if(DSmoothInput[i][1] > 0){
@@ -209,6 +213,13 @@ function computeCoeffs(Input){
 			Y3[2].push(Math.log(DSmoothInputMax[i][1]));
 		}	
 	}
+	// basic data, almost directly the input (with some weights)
+	for (let i = 0; i<SmoothInputMax.length; i++){
+		for (let j = 0; j<=i; j++){
+			X3[3].push(SmoothInputMax[i][0]);
+			Y3[3].push(SmoothInputMax[i][1]);
+		}
+	}
 
 	/********************************************
 			linear regression
@@ -217,6 +228,10 @@ function computeCoeffs(Input){
 	var A;
 	var B;
 	var coeffs = [{},{},{}];
+	// basic linear regression without log and exp
+	let a_and_b = linearRegression(X3[3],Y3[3]);
+	let a = a_and_b[0];
+	let b = a_and_b[1];
 	for (let k = 0; k<3; k++){
 		let A_and_B = linearRegression(X3[k],Y3[k]);
 		A = A_and_B[0];
@@ -287,10 +302,14 @@ function computeCoeffs(Input){
 			}
 		}
 		//alert(alpha+";"+beta+";"+unSurTau);
-		coeffs[k] =  {error:false, alpha:alpha, beta:beta, unSurTau:unSurTau};
+		coeffs[k] =  {error:false, alpha:alpha, beta:beta, unSurTau:unSurTau,a:A, b:b};
 	}
 	//return {error:false, alpha:alpha, beta:beta, unSurTau:unSurTau};
-	return coeffs;
+	return {
+		"min":coeffs[0],
+		"middle":coeffs[1],
+		"max":coeffs[2]
+	};
 }
 
 
@@ -305,6 +324,17 @@ function inverse_f1(alpha,beta,unSurTau,y){
 		if (y>0){
 			return Math.log(y)/unSurTau;
 		}	
+	}
+	return null;
+}
+
+function f2(a,b,t){
+    return a*t+b;
+}
+
+function inverse_f2(a,b,y){
+	if (a != 0){
+		return (y-b)/a;
 	}
 	return null;
 }

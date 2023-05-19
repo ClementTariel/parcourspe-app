@@ -21,11 +21,16 @@ if(window.is_using_electron){
 			etab_name = data["name"];
 			document.getElementById("etabName").value = /*sanitize*/(etab_name);
 			let coeffs = computeCoeffs(points);
-			if (!(coeffs==null || coeffs[0]==null || coeffs[0].alpha==null || coeffs[1]==null || coeffs[1].alpha==null|| coeffs[2]==null || coeffs[2].alpha==null)){
-				error = coeffs[0].error || coeffs[1].error || coeffs[2].error;
-				alpha = coeffs[1].alpha;
-				beta = coeffs[1].beta;
-				unSurTau = coeffs[1].unSurTau;
+			method = "middle"
+			if (!(coeffs==null || coeffs["min"]==null || coeffs["min"].alpha==null || coeffs["min"].a==null || coeffs["min"].b==null 
+			|| coeffs["middle"]==null || coeffs["middle"].alpha==null || coeffs["middle"].a==null || coeffs["middle"].b==null
+			|| coeffs["max"]==null || coeffs["max"].alpha==null || coeffs["mzx"].a==null || coeffs["max"].b==null)){
+				error = coeffs["min"].error || coeffs["middle"].error || coeffs["max"].error;
+				alpha = coeffs[method].alpha;
+				beta = coeffs[method].beta;
+				unSurTau = coeffs[method].unSurTau;
+				a = coeffs[method].a;
+				b = coeffs[method].b;
 			}
 			if (typeof updatePredictedValue === "function"){
 				updatePredictedValue();
@@ -48,11 +53,16 @@ if(window.is_using_electron){
 		etab_name = data["name"];
 		document.getElementById("etabName").value = /*sanitize*/(etab_name);
 		let coeffs = computeCoeffs(points);
-		if (!(coeffs==null || coeffs[0]==null || coeffs[0].alpha==null || coeffs[1]==null || coeffs[1].alpha==null|| coeffs[2]==null || coeffs[2].alpha==null)){
-			error = coeffs[0].error || coeffs[1].error || coeffs[2].error;
-			alpha = coeffs[1].alpha;
-			beta = coeffs[1].beta;
-			unSurTau = coeffs[1].unSurTau;
+		method = "middle"
+		if (!(coeffs==null || coeffs["min"]==null || coeffs["min"].alpha==null || coeffs["min"].a==null || coeffs["min"].b==null 
+		|| coeffs["middle"]==null || coeffs["middle"].alpha==null || coeffs["middle"].a==null || coeffs["middle"].b==null
+		|| coeffs["max"]==null || coeffs["max"].alpha==null || coeffs["mzx"].a==null || coeffs["max"].b==null)){
+			error = coeffs["min"].error || coeffs["middle"].error || coeffs["max"].error;
+			alpha = coeffs[method].alpha;
+			beta = coeffs[method].beta;
+			unSurTau = coeffs[method].unSurTau;
+			a = coeffs[method].a;
+			b = coeffs[method].b;
 		}
 		if (typeof updatePredictedValue === "function"){
 			updatePredictedValue();

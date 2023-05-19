@@ -111,7 +111,7 @@ function updateCanvas(x,y){
             }
         }*/
         
-        plotPrediction(canvas,alpha,beta,unSurTau,error);
+        plotPrediction(canvas,alpha,beta,unSurTau,a,b,error);
         plotPoints(canvas,points);
 
         ctx.fillStyle = "black";
@@ -119,7 +119,7 @@ function updateCanvas(x,y){
 
     }else{
         canvasHovered = false;
-        plotPrediction(canvas,alpha,beta,unSurTau,error);
+        plotPrediction(canvas,alpha,beta,unSurTau,a,b,error);
         plotPoints(canvas,points);
     }
     if (date_selected_is_valid){
@@ -258,11 +258,11 @@ function initDraw(canvas,isSelected) {
     }
 }
 
-function plotPrediction(canvas,alpha,beta,unSurTau,error){
-    if (points == null || points.length == 0 || error || alpha == null || beta == null || unSurTau == null){
+function plotf(f,color){
+    if (points == null || points.length ==0){
         return;
     }
-    let functionColor = 'orange';
+    let functionColor = color;
     let ctx = canvas.getContext('2d');
     ctx.lineWidth = 1;
     let n = nb_days;
@@ -273,7 +273,7 @@ function plotPrediction(canvas,alpha,beta,unSurTau,error){
     ctx.stroke();
     ctx.beginPath();
     ctx.strokeStyle = functionColor;
-    let rank_i = f1(alpha,beta,unSurTau,0);
+    let rank_i = f(0);
     let next_rank = rank_i;
     let x_i = 0;
     let next_x = x_i;
@@ -283,7 +283,7 @@ function plotPrediction(canvas,alpha,beta,unSurTau,error){
     let y_from;
     let y_to;
     for (let i = 0; i < n; i++) {
-        next_rank = f1(alpha,beta,unSurTau,i+1);
+        next_rank = f(i+1);
         next_x = Math.round(canvas.width*(i+1)/n);
 
         max_y = canvas.height - hiddenYOffset - 1;
@@ -316,7 +316,7 @@ function plotPrediction(canvas,alpha,beta,unSurTau,error){
         if (rank_i>0 && next_rank<=0){
             ctx.stroke();
             ctx.beginPath();
-            ctx.strokeStyle = 'green';
+            ctx.strokeStyle = color;
             ctx.arc(Math.round(canvas.width*(i+0.5)/n), rankToY(canvas,0), 2, 0, 2 * Math.PI);
             ctx.stroke();
             ctx.strokeStyle = functionColor;
@@ -326,6 +326,79 @@ function plotPrediction(canvas,alpha,beta,unSurTau,error){
         x_i = next_x
     }
     ctx.stroke();
+}
+
+function plotPrediction(canvas,alpha,beta,unSurTau,a,b,error){
+    if (points == null || points.length == 0 || error || alpha == null || beta == null || unSurTau == null || a==null || b==null){
+        return;
+    }
+    plotf((x)=>{return f1(alpha,beta,unSurTau,x)},'orange')
+    plotf((x)=>{return f2(a,b,x)},'green')
+    // let functionColor = 'orange';
+    // let ctx = canvas.getContext('2d');
+    // ctx.lineWidth = 1;
+    // let n = nb_days;
+    // ctx.beginPath();
+    // ctx.strokeStyle ='#A0A0A0';
+    // ctx.moveTo(1, Math.round(rankToY(canvas,0)));
+    // ctx.lineTo(canvas.width-1, Math.round(rankToY(canvas,0)));
+    // ctx.stroke();
+    // ctx.beginPath();
+    // ctx.strokeStyle = functionColor;
+    // let rank_i = f1(alpha,beta,unSurTau,0);
+    // let next_rank = rank_i;
+    // let x_i = 0;
+    // let next_x = x_i;
+    // let max_y;
+    // let min_y;
+    // let radius = canvasBorderRadius;
+    // let y_from;
+    // let y_to;
+    // for (let i = 0; i < n; i++) {
+    //     next_rank = f1(alpha,beta,unSurTau,i+1);
+    //     next_x = Math.round(canvas.width*(i+1)/n);
+
+    //     max_y = canvas.height - hiddenYOffset - 1;
+    //     min_y = 1;
+    //     if (x_i < radius){
+    //         min_y = Math.ceil(radius - Math.sqrt(radius**2 - (radius - x_i)**2));
+    //         max_y = canvas.height - hiddenYOffset - min_y;
+    //     }else if (next_x > canvas.width - radius){
+    //         min_y = Math.ceil(radius - Math.sqrt(radius**2 - (next_x - canvas.width + radius)**2));
+    //         max_y = canvas.height - hiddenYOffset - min_y;
+    //     }
+    //     y_from = rankToY(canvas,rank_i);
+    //     y_to = rankToY(canvas,next_rank);
+    //     if (y_from<y_to){
+    //         if (y_from < max_y && y_to >= max_y){
+    //             let t = (y_to-max_y)/(y_to-y_from);
+    //             next_x = x_i*t + next_x*(1-t);
+    //             y_to = max_y;
+    //             continue;
+    //         }else if (y_from <= min_y && y_to > min_y){
+    //             let t = (min_y-y_from)/(y_to-y_from);
+    //             x_i = x_i*(1-t) + next_x*t;
+    //             y_from = min_y;
+    //         }
+    //     }
+    //     if (!(y_from < min_y || y_from > max_y || y_to < min_y || y_to > max_y)){
+    //         ctx.moveTo(x_i, y_from);
+    //         ctx.lineTo(next_x, y_to);
+    //     }
+    //     if (rank_i>0 && next_rank<=0){
+    //         ctx.stroke();
+    //         ctx.beginPath();
+    //         ctx.strokeStyle = 'green';
+    //         ctx.arc(Math.round(canvas.width*(i+0.5)/n), rankToY(canvas,0), 2, 0, 2 * Math.PI);
+    //         ctx.stroke();
+    //         ctx.strokeStyle = functionColor;
+    //         ctx.beginPath();
+    //     }
+    //     rank_i = next_rank;
+    //     x_i = next_x
+    // }
+    // ctx.stroke();
+
 }
 
 function plotPoints(canvas,points){
